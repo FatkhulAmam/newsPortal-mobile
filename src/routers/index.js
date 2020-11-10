@@ -15,6 +15,8 @@ import SignUp from '../screens/SignUp'
 import Activities from '../screens/Activities';
 import Profile from '../screens/Profile'
 import Search from '../screens/Search'
+import EditProfile from '../screens/EditProfille'
+import AddNews from '../screens/AddNews'
 
 import BottomNavigation from '../components/BottomNavigation'
 
@@ -36,6 +38,8 @@ const Route = () => {
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="MainApp" component={MainApp} options={{ headerShown: false }} />
             <Stack.Screen name="Search" component={Search} options={{ headerShown: false }} />
+            <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
+            <Stack.Screen name="AddNews" component={AddNews} options={{ headerShown: false }} />
         </Stack.Navigator>
     )
 }

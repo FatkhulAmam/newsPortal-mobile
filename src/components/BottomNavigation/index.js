@@ -80,7 +80,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 25,
         paddingVertical: 13,
         borderTopLeftRadius: 15,
-        borderTopRightRadius: 15
+        borderTopRightRadius: 15,
+        height: 55
     },
     iconTab:{
         alignItems: 'center',

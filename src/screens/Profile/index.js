@@ -15,74 +15,23 @@ const Profile = ({ navigation }) => {
                     </Button>
                 </Right>
             </Header>
-            <View style={styles.parent}>
-                <Text style={styles.tittle}>My Profile</Text>
+            <Card style={styles.parent} transparent>
                 <View style={styles.userBio}>
                     <Image style={styles.image} source={profile} />
-                    <View style={styles.identity}>
-                        <Text style={styles.name}>yudha keling</Text>
-                        <Text note>yudkelgtg@mail.com</Text>
-                    </View>
-                </View>
-                <View>
-                    <TouchableOpacity onPress={() => navigation.navigate('MyOrder')}>
-                        <Card transparent>
-                            <CardItem>
-                                <Body style={styles.card}>
-                                    <View>
-                                        <Text>My Orders</Text>
-                                        <Text note>Already have an order</Text>
-                                    </View>
-                                    <Right />
-                                    <Icon name="angle-right" size={22} color="#8f8f8f" />
-                                </Body>
-                            </CardItem>
-                        </Card>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('ShippingAddress')}>
-                        <Card transparent>
-                            <CardItem>
-                                <Body style={styles.card}>
-                                    <View>
-                                        <Text>Shipping Address</Text>
-                                        <Text note>3 Address</Text>
-                                    </View>
-                                    <Right />
-                                    <Icon name="angle-right" size={22} color="#8f8f8f" />
-                                </Body>
-                            </CardItem>
-                        </Card>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('Setting')}>
-                        <Card transparent>
-                            <CardItem>
-                                <Body style={styles.card}>
-                                    <View>
-                                        <Text>Setting</Text>
-                                        <Text note>Account setting</Text>
-                                    </View>
-                                    <Right />
-                                    <Icon name="angle-right" size={22} color="#8f8f8f" />
-                                </Body>
-                            </CardItem>
-                        </Card>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                        <Card transparent>
-                            <CardItem>
-                                <Body style={styles.card}>
-                                    <View>
-                                        <Text>Log Out</Text>
-                                        <Text note>Account setting</Text>
-                                    </View>
-                                    <Right />
-                                    <Icon name="angle-right" size={22} color="#8f8f8f" />
-                                </Body>
-                            </CardItem>
-                        </Card>
+                    <Text style={styles.name}>yudha keling</Text>
+                    <Left />
+                    <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
+                        <Text style={styles.edit}>Edit</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </Card>
+            <Card style={styles.cardWrite}>
+                <Text>Tulis redaksi pertama Anda</Text>
+                <Text note>jadi profesional dan melampauinya</Text>
+                <Button style={styles.btnWrite} onPress={() => navigation.navigate("AddNews")} block>
+                    <Text style={styles.btntext}>Write</Text>
+                </Button>
+            </Card>
         </>
     )
 }
@@ -91,7 +40,14 @@ export default Profile
 
 const styles = StyleSheet.create({
     parent: {
-        padding: 10
+        padding: 10,
+        backgroundColor: '#FFFFFF'
+    },
+    header: {
+        backgroundColor: '#FFFFFF',
+    },
+    text: {
+        color: '#000000',
     },
     tittle: {
         fontSize: 45,
@@ -111,10 +67,28 @@ const styles = StyleSheet.create({
         paddingLeft: 15
     },
     name: {
-        fontSize: 30,
+        marginLeft: 20,
+        fontSize: 20,
         fontWeight: 'bold'
     },
     card: {
         flexDirection: 'row'
+    },
+    edit: {
+        marginRight: 15,
+        color: '#C10000'
+    },
+    cardWrite: {
+        backgroundColor: '#FFFFFF',
+        height: 150,
+        marginLeft: 50,
+        marginRight: 50,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    btnWrite: {
+        marginTop: 10,
+        marginLeft: 50,
+        marginRight: 50
     }
 })

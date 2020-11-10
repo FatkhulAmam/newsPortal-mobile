@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 const Favorites = ({navigation}) => {
     return (
         <View>
-            <Header style={styles.header}>
+            <Header style={styles.header} transparent>
                 <Body>
                     <Title style={styles.text}>Activities Page</Title>
                 </Body>
@@ -26,7 +26,6 @@ export default Favorites
 const styles = StyleSheet.create({
     header: {
         backgroundColor: '#FFFFFF',
-        marginTop: 20
     },
     text: {
         color: '#000000',
