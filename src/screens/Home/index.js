@@ -1,13 +1,21 @@
 import React from 'react'
-import { StyleSheet, View, Image, ScrollView, TouchableOpacity } from 'react-native'
-import { Text, Card, CardItem, Body, Button, Right } from 'native-base'
+import { StyleSheet } from 'react-native'
+import { Container, Header, Left, Body, Right, Button, Title } from 'native-base';
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 const Home = ({ navigation }) => {
     return (
         <>
-            <View>
-                <Text>home page</Text>
-            </View>
+            <Header style={styles.header}>
+                <Body>
+                    <Title style={styles.text}>Home Page</Title>
+                </Body>
+                <Right>
+                    <Button transparent onPress={()=>navigation.navigate("Search")}>
+                        <Icon name='search' size={20} />
+                    </Button>
+                </Right>
+            </Header>
         </>
     )
 }
@@ -15,6 +23,12 @@ const Home = ({ navigation }) => {
 export default Home
 
 const styles = StyleSheet.create({
-    
+    header: {
+        backgroundColor: '#FFFFFF',
+        marginTop: 20
+    },
+    text: {
+        color: '#000000',
+    }
 })
 

@@ -14,6 +14,7 @@ import Login from '../screens/Login'
 import SignUp from '../screens/SignUp'
 import Activities from '../screens/Activities';
 import Profile from '../screens/Profile'
+import Search from '../screens/Search'
 
 import BottomNavigation from '../components/BottomNavigation'
 
@@ -34,6 +35,7 @@ const Route = () => {
             <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="MainApp" component={MainApp} options={{ headerShown: false }} />
+            <Stack.Screen name="Search" component={Search} options={{ headerShown: false }} />
         </Stack.Navigator>
     )
 }
