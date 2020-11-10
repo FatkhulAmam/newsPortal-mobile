@@ -46,7 +46,7 @@ const Login = ({navigation}) => {
                             </Body>
                         </CardItem>
                     </Card>
-                    <Text style={styles.textLogin}>Forgot your password <Icon name="long-arrow-right" size={15} color="green" /></Text>
+                    <Text style={styles.textLogin}>Forgot your password <Icon name="long-arrow-right" size={15} color="#A00000" /></Text>
                     <Button style={styles.btnLogin} onPress={()=>navigation.navigate("MainApp")} block>
                         <Text style={styles.btntext}>LOGIN</Text>
                     </Button>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     btnLogin: {
         borderRadius: 25,
         marginTop: 25,
-        backgroundColor: 'green',
+        backgroundColor: '#A00000',
     },
     btntext: {
         color: "#FFFFFF",

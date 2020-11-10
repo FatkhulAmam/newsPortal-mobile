@@ -57,7 +57,7 @@ const SignUp = ({navigation}) => {
                         <TouchableOpacity>
                     <Text style={styles.textLogin} onPress={()=>navigation.navigate("Login")}>
                         Already have a account?
-                        <Icon name="long-arrow-right" size={15} color="green" />
+                        <Icon name="long-arrow-right" size={15} color="#A00000" />
                     </Text>
                     </TouchableOpacity>
                     <Button style={styles.btnLogin} block>
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     btnLogin: {
         borderRadius: 25,
         marginTop: 25,
-        backgroundColor: 'green'
+        backgroundColor: '#A00000'
     },
     btntext: {
         color: "#FFFFFF",

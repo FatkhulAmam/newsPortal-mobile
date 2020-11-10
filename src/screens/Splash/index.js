@@ -13,7 +13,7 @@ const Splash = ({ navigation }) => {
 
     return (
         <View style={styles.parent}>
-            <Image source={logo}/>
+            <Text>maos</Text>
         </View>
     )
 }
@@ -25,6 +25,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#32C33B'
+        backgroundColor: '#C10000'
     }
 })

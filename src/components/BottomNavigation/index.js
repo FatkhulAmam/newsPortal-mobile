@@ -4,8 +4,8 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 //import assets icons
 import Home from '../../assets/images/home.svg'
 import HomeActive from '../../assets/images/homeActive.svg'
-import Favorites from '../../assets/images/favorite.svg'
-import FavoritesActive from '../../assets/images/favoriteActive.svg'
+import Activities from '../../assets/images/activities.svg'
+import ActivitiesActive from '../../assets/images/activitiesActive.svg'
 import Profile from '../../assets/images/profile.svg'
 import ProfileActive from '../../assets/images/profileActive.svg'
 
@@ -50,7 +50,7 @@ const BottomNavigation = ({ state, descriptors, navigation }) => {
 
                 const IconTab = () => {
                     if (label === "Home") return isFocused ? <HomeActive /> : <Home />
-                    if (label === "Favorites") return isFocused ? <FavoritesActive /> : <Favorites />
+                    if (label === "Activities") return isFocused ? <ActivitiesActive /> : <Activities />
                     if (label === "Profile") return isFocused ? <ProfileActive /> : <Profile />
                     return <Home />
                 }
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     text: (isFocused) => ({
-        color: isFocused ? '#32C33B' : '#C8C8C8',
+        color: isFocused ? '#C10000' : '#C8C8C8',
         fontSize: 13,
         marginTop: 5
     })
