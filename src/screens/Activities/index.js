@@ -9,7 +9,7 @@ const Favorites = () => {
         <View>
             <Header style={styles.header}>
                 <Body>
-                    <Title style={styles.text}>Favorites Page</Title>
+                    <Title style={styles.text}>Activities Page</Title>
                 </Body>
                 <Right>
                     <Button transparent>
@@ -25,7 +25,8 @@ export default Favorites
 
 const styles = StyleSheet.create({
     header: {
-        backgroundColor: '#FFFFFF'
+        backgroundColor: '#FFFFFF',
+        marginTop: 20
     },
     text: {
         color: '#000000',
