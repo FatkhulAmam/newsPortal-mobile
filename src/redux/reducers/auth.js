@@ -32,10 +32,11 @@ export default (state = initialState, action) => {
                 token: action.payload.data.token
             }
         }
-        case 'CLEAR_MESSAGE': {
+        case 'LOGOUT': {
             return{
                 ...state,
-                message: ''
+                isLogin: false,
+                token: ''
             }
         }
         default:{
