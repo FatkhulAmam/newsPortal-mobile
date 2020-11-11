@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { StyleSheet, Picker, View, ScrollView } from 'react-native'
-import { Text, Header, Form, Item, Input, Label, Textarea, Body, Right, Button, Title } from 'native-base';
+import { Text, Header, Form, Item, Label, Textarea, Body, Right, Button, Title, Input } from 'native-base';
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -26,23 +26,23 @@ const AddNews = ({ navigation }) => {
             </View>
             <View style={styles.parent}>
                 <ScrollView>
-                <Form>
-                    <Item stackedLabel>
-                        <Label>Headline</Label>
-                        <Input />
-                    </Item>
-                    <View style={styles.container}>
-                        <Picker
-                            selectedValue={selectedValue}
-                            style={styles.picker}
-                            onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                        >
-                            <Picker.Item label='category'/>
-                            <Picker.Item label="JavaScript" value="js" />
-                        </Picker>
-                    </View>
-                    <Textarea rowSpan={16.7} bordered placeholder="description" />
-                </Form>
+                    <Form>
+                        <Item floatingLabel last>
+                            <Label>Headline</Label>
+                            <Input />
+                        </Item>
+                        <View style={styles.container}>
+                            <Picker
+                                selectedValue={selectedValue}
+                                style={styles.picker}
+                                onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+                            >
+                                <Picker.Item label='category' />
+                                <Picker.Item label="JavaScript" value="js" />
+                            </Picker>
+                        </View>
+                        <Textarea rowSpan={16.7} bordered placeholder="description" />
+                    </Form>
                 </ScrollView>
             </View>
         </>
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     parent: {
         padding: 10
     },
-    pushtxt:{
+    pushtxt: {
         color: '#A10000'
     }
 })
