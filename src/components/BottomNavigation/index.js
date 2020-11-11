@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: '#FFFFFF',
         justifyContent: 'space-between',
-        paddingHorizontal: 25,
+        paddingHorizontal: 50,
         paddingVertical: 13,
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
@@ -90,6 +90,6 @@ const styles = StyleSheet.create({
     text: (isFocused) => ({
         color: isFocused ? '#C10000' : '#C8C8C8',
         fontSize: 13,
-        marginTop: 5
+        marginTop: 2
     })
 })

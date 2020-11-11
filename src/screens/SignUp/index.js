@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Alert, ScrollView } from 'react-native'
+import { StyleSheet, View, Alert, ScrollView, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import {
     Button, Header, Left, Text,
@@ -79,7 +79,9 @@ class SignUp extends Component {
                         </Button>
                         <View style={styles.footer}>
                             <Text >Already have an account? </Text>
-                            <Text style={styles.loginTxt}>Login</Text>
+                            <TouchableOpacity onPress={()=>this.props.navigation.navigate('Login')}>
+                                <Text style={styles.loginTxt}>Login</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </ScrollView>
