@@ -2,56 +2,70 @@ import React from 'react'
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'
 import { Header, Left, Body, Text, Right, Button, Card, CardItem } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { connect } from 'react-redux'
 
 import profile from '../../assets/images/user.png'
-import { useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 
-const Profile = () => {
-    const navigation = useNavigation()
+import { getProfile } from '../../redux/actions/profile'
 
-    const dispatch = useDispatch()
+class Profile extends React.Component {
+    componentDidMount() {
+        this.props.getProfile()
+    }
 
-    return (
-        <>
-            <View style={styles.parent}>
-                <Header style={styles.header} transparent>
-                    <Right>
-                        <Button transparent>
-                            <Icon name='search' size={22} />
-                        </Button>
-                    </Right>
-                </Header>
-                <Card style={styles.bioCard} transparent>
-                    <Image style={styles.image} source={profile} />
-                    <Text style={styles.name}>yudha keling</Text>
-                    <Text note>yudhaKelingLing@mail.com</Text>
-                    <Left />
-                    <View style={styles.menu}>
-                        <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
-                            <Text style={styles.edit}>Edit</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={()=> dispatch({type: 'LOGOUT'})}>
-                            <Text style={styles.logoutTxt}>Logout</Text>
-                        </TouchableOpacity>
-                    </View>
+    render() {
+        return (
+            <>
+                <View style={styles.parent}>
+                    <Header style={styles.header} transparent>
+                        <Right>
+                            <Button transparent>
+                                <Icon name='search' size={22} />
+                            </Button>
+                        </Right>
+                    </Header>
+                    {!isLoading && !isError && data.length !== 0 && data.map(item => {
+                        return (
+                            <Card style={styles.bioCard} transparent>
+                                <Image style={styles.image} source={profile} />
+                                <Text style={styles.name}>{item.name}</Text>
+                                <Text note>{item.email}</Text>
+                                <Left />
+                                <View style={styles.menu}>
+                                    <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
+                                        <Text style={styles.edit}>Edit</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => dispatch({ type: 'LOGOUT' })}>
+                                        <Text style={styles.logoutTxt}>Logout</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </Card>
+                        )
+                    })}
+                    <Button tra block style={styles.btnNews} onPress={() => navigation.navigate('MyNews')}>
+                        <Text>My News</Text>
+                    </Button>
+                </View>
+                <Card style={styles.cardWrite} transparent>
+                    <Text>Tulis redaksi Anda</Text>
+                    <Text note>jadi profesional dan melampauinya</Text>
+                    <Button style={styles.btnWrite} onPress={() => navigation.navigate("AddNews")} block>
+                        <Text style={styles.btntext}>Write</Text>
+                    </Button>
                 </Card>
-                <Button tra block style={styles.btnNews} onPress={()=>navigation.navigate('MyNews')}>
-                    <Text>My News</Text>
-                </Button>
-            </View>
-            <Card style={styles.cardWrite} transparent>
-                <Text>Tulis redaksi Anda</Text>
-                <Text note>jadi profesional dan melampauinya</Text>
-                <Button style={styles.btnWrite} onPress={() => navigation.navigate("AddNews")} block>
-                    <Text style={styles.btntext}>Write</Text>
-                </Button>
-            </Card>
-        </>
-    )
+            </>
+        )
+    }
 }
 
-export default Profile
+const mapStateToProps = state => ({
+    profile: state.profile
+})
+const mapDispatchToProps = {
+    getProfile
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)
 
 const styles = StyleSheet.create({
     parent: {
@@ -83,7 +97,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: 'bold',
     },
-    menu:{
+    menu: {
         flexDirection: 'row',
         marginTop: 10,
     },
@@ -113,7 +127,7 @@ const styles = StyleSheet.create({
         marginRight: 50,
         borderRadius: 25
     },
-    btnNews:{
+    btnNews: {
         backgroundColor: '#A10000'
     }
 })

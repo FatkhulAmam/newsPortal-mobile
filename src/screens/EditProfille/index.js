@@ -5,63 +5,87 @@ import { RadioButton } from 'react-native-paper';
 
 import profile from '../../assets/images/user.png'
 
-const EditProfile = ({ navigation }) => {
-    const [checked, setChecked] = React.useState('first');
-    return (
-        <>
-            <View style={styles.parent}>
-                <Header transparent>
-                    <Body>
-                        <Title style={styles.text}>Edit profile</Title>
-                    </Body>
-                    <Right>
-                        <Button transparent onPress={() => navigation.navigate("Profile")}>
-                            <Text style={styles.savetxt}>save</Text>
-                        </Button>
-                    </Right>
-                </Header>
-                <ScrollView>
-                    <View style={styles.component}>
-                        <View>
-                            <View style={styles.userBio}>
-                                <Image style={styles.image} source={profile} />
-                                <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
-                                    <Text style={styles.pick}>Choose Image</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View>
-                            <Form>
-                                <Item floatingLabel>
-                                    <Label>Username</Label>
-                                    <Input />
-                                </Item>
-                                <Item floatingLabel >
-                                    <Label>email</Label>
-                                    <Input />
-                                </Item>
-                                <Item floatingLabel >
-                                    <Label>password</Label>
-                                    <Input />
-                                </Item>
-                                <Item floatingLabel last>
-                                    <Label>gender</Label>
-                                    <Input />
-                                </Item>
-                                <Item floatingLabel last>
-                                    <Label>birth</Label>
-                                    <Input />
-                                </Item>
-                            </Form>
-                        </View>
-                    </View>
-                </ScrollView>
-            </View>
-        </>
-    )
+import { getProfile } from '../../redux/actions/profile'
+
+class EditProfile extends React.Component {
+    componentDidMount() {
+        this.props.getProfile()
+    }
+
+    render() {
+        return (
+            <>
+                <View style={styles.parent}>
+                    <Header transparent>
+                        <Body>
+                            <Title style={styles.text}>Edit profile</Title>
+                        </Body>
+                        <Right>
+                            <Button transparent onPress={() => navigation.navigate("Profile")}>
+                                <Text style={styles.savetxt}>save</Text>
+                            </Button>
+                        </Right>
+                    </Header>
+                    <ScrollView>
+                        {!isLoading && !isError && data.length !== 0 && data.map(item => {
+                            return (
+                                <View style={styles.component}>
+                                    <View>
+                                        <View style={styles.userBio}>
+                                            <Image style={styles.image} source={profile} />
+                                            <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
+                                                <Text style={styles.pick}>Choose Image</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                    <View>
+                                        <Form>
+                                            <Item floatingLabel>
+                                                <Label>Username</Label>
+                                                <Input value={item.name} />
+                                            </Item>
+                                            <Item floatingLabel >
+                                                <Label>email</Label>
+                                                <Input />
+                                            </Item>
+                                            <Item floatingLabel >
+                                                <Label>password</Label>
+                                                <Input value={item.password} />
+                                            </Item>
+                                            <Item floatingLabel last>
+                                                <Label>gender</Label>
+                                                <Input value={item.gender} />
+                                            </Item>
+                                            <Item floatingLabel last>
+                                                <Label>birth</Label>
+                                                <Input value={item.birth} />
+                                            </Item>
+                                        </Form>
+                                    </View>
+                                </View>
+                            )
+                        })}
+                    </ScrollView>
+                    {isLoading && !isError && (
+                        <Text>Loading</Text>
+                    )}
+                    {isError && message !== '' && (
+                        <Text>{message}</Text>
+                    )}
+                </View>
+            </>
+        )
+    }
 }
 
-export default EditProfile
+const mapStateToProps = state => ({
+    profile: state.profile
+})
+const mapDispatchToProps = {
+    getProfile
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfile)
 
 const styles = StyleSheet.create({
     parent: {
