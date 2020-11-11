@@ -1,79 +1,72 @@
-import React, {Component} from 'react'
-import { StyleSheet, View, Text, Alert } from 'react-native'
+import React from 'react'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import {
-    Button, Header, Left, Body,
-    Right, Card, CardItem,
-    Form, Item, Input, Label
+    Button, Header, Left,
+    Right, Label,
+    Form, Item, Input
 } from 'native-base';
+import LogoMaos from '../../assets/images/maos.svg' 
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-const Login = ({navigation}) => {
+const SignUp = ({ navigation }) => {
     return (
         <View style={styles.parent}>
             <View>
                 <Header transparent>
                     <Left>
-                        <Button transparent onPress={()=> this.props.navigation.goBack()}>
+                        <Button transparent>
                             <Icon name='angle-left' size={30} />
                         </Button>
                     </Left>
                     <Right />
                 </Header>
             </View>
-            <View>
-                <Text style={styles.text}>Login</Text>
+            <View style={styles.header}>
+                <LogoMaos />
+                <Text style={styles.text}>LOGIN</Text>
+                <Text>Have an maos account</Text>
             </View>
             <View style={styles.register}>
                 <Form>
-                    <Card>
-                        <CardItem>
-                            <Body>
-                                <Item style={styles.input} floatingLabel>
-                                    <Label style={styles.label}>email</Label>
-                                    <Input onChangeText={email=>this.setState({email})}/>
-                                </Item>
-                            </Body>
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem>
-                            <Body>
-                                <Item style={styles.input} floatingLabel>
-                                    <Label style={styles.label}>Password</Label>
-                                    <Input onChangeText={password=>this.setState({password})}/>
-                                </Item>
-                            </Body>
-                        </CardItem>
-                    </Card>
-                    <Text style={styles.textLogin}>Forgot your password <Icon name="long-arrow-right" size={15} color="#A00000" /></Text>
-                    <Button style={styles.btnLogin} onPress={()=>navigation.navigate("MainApp")} block>
-                        <Text style={styles.btntext}>LOGIN</Text>
-                    </Button>
+                    <Item floatingLabel>
+                        <Label>Email</Label>
+                        <Input />
+                    </Item>
+                    <Item floatingLabel last>
+                        <Label>Password</Label>
+                        <Input />
+                    </Item>
                 </Form>
+                <Button style={styles.btnLogin} block onPress={()=>navigation.navigate("MainApp")}>
+                        <Text style={styles.btntext}>LOGIN</Text>
+                </Button>
+                <Button block transparent>
+                    <Text style={styles.loginTxt}>Forgot My Password</Text>
+                </Button>
             </View>
         </View>
     )
 }
 
-export default Login
+export default SignUp
 
 const styles = StyleSheet.create({
+    header: {
+        alignItems: 'center'
+    },
     text: {
-        paddingLeft: 15,
+        marginTop: 25,
         fontSize: 40,
         fontWeight: "bold"
     },
     register: {
         marginLeft: 10,
         marginRight: 10,
-        marginTop: 50
+        marginTop: 20
     },
     input: {
-        height: 40,
-    },
-    label:{
-        bottom: 5
+        height: 40
     },
     textLogin: {
         fontSize: 17,
@@ -84,9 +77,15 @@ const styles = StyleSheet.create({
     btnLogin: {
         borderRadius: 25,
         marginTop: 25,
-        backgroundColor: '#A00000',
+        backgroundColor: '#A00000'
     },
     btntext: {
         color: "#FFFFFF",
+    },
+    input: {
+        color: "#A00000"
+    },
+    loginTxt: {
+        color: '#A00000'
     }
 })

@@ -1,15 +1,15 @@
 import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity} from 'react-native'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import {
-    Button, Header, Left, Body,
-    Right, Card, CardItem,
+    Button, Header, Left, Text,
+    Right, Label,
     Form, Item, Input
 } from 'native-base';
-
+import LogoMaos from '../../assets/images/maos.svg' 
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-const SignUp = ({navigation}) => {
+const SignUp = ({ navigation }) => {
     return (
         <View style={styles.parent}>
             <View>
@@ -22,48 +22,31 @@ const SignUp = ({navigation}) => {
                     <Right />
                 </Header>
             </View>
-            <View>
+            <View style={styles.header}>
+                <LogoMaos />
                 <Text style={styles.text}>Sign Up</Text>
             </View>
             <View style={styles.register}>
                 <Form>
-                    <Card>
-                        <CardItem>
-                            <Body>
-                                <Item style={styles.input}>
-                                    <Input placeholder="name" />
-                                </Item>
-                            </Body>
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem>
-                            <Body>
-                                <Item style={styles.input}>
-                                    <Input placeholder="email" />
-                                </Item>
-                            </Body>
-                        </CardItem>
-                    </Card>
-                    <Card>
-                        <CardItem>
-                            <Body>
-                                <Item style={styles.input}>
-                                    <Input placeholder="password" />
-                                </Item>
-                            </Body>
-                        </CardItem>
-                    </Card>
-                        <TouchableOpacity>
-                    <Text style={styles.textLogin} onPress={()=>navigation.navigate("Login")}>
-                        Already have a account?
-                        <Icon name="long-arrow-right" size={15} color="#A00000" />
-                    </Text>
-                    </TouchableOpacity>
-                    <Button style={styles.btnLogin} block>
-                        <Text style={styles.btntext}>SIGN UP</Text>
-                    </Button>
+                    <Item floatingLabel >
+                        <Label>Username</Label>
+                        <Input style={styles.input}/>
+                    </Item>
+                    <Item floatingLabel>
+                        <Label>Email</Label>
+                        <Input />
+                    </Item>
+                    <Item floatingLabel last>
+                        <Label>Password</Label>
+                        <Input />
+                    </Item>
                 </Form>
+                <Button style={styles.btnLogin} block>
+                        <Text style={styles.btntext}>Sign Up</Text>
+                </Button>
+                <Button block transparent onPress={()=>navigation.navigate("Login")}>
+                    <Text style={styles.loginTxt}>LOGIN</Text>
+                </Button>
             </View>
         </View>
     )
@@ -72,15 +55,18 @@ const SignUp = ({navigation}) => {
 export default SignUp
 
 const styles = StyleSheet.create({
+    header: {
+        alignItems: 'center'
+    },
     text: {
-        paddingLeft: 15,
+        marginTop: 25,
         fontSize: 40,
         fontWeight: "bold"
     },
     register: {
         marginLeft: 10,
         marginRight: 10,
-        marginTop: 50
+        marginTop: 20
     },
     input: {
         height: 40
@@ -98,5 +84,11 @@ const styles = StyleSheet.create({
     },
     btntext: {
         color: "#FFFFFF",
+    },
+    input: {
+        color: "#A00000"
+    },
+    loginTxt: {
+        color: '#A00000'
     }
 })

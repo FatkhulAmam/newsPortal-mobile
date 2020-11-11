@@ -7,13 +7,13 @@ import logo from '../../assets/images/logoSplash.png'
 const Splash = ({ navigation }) => {
     useEffect(()=>{
         setTimeout(() => {
-            navigation.replace("MainApp")
+            navigation.replace("SignUp")
         }, 1000);
     }, [navigation]);
 
     return (
         <View style={styles.parent}>
-            <Text>maos</Text>
+            <Image source={logo} />
         </View>
     )
 }
@@ -25,6 +25,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#C10000'
+        backgroundColor: '#A00000'
     }
 })
