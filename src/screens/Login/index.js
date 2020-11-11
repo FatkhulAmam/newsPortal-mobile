@@ -1,15 +1,40 @@
-import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import React, {Component} from 'react'
+import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native'
+import {connect} from 'react-redux'
 import {
     Button, Header, Left,
     Right, Label,
     Form, Item, Input
 } from 'native-base';
 import LogoMaos from '../../assets/images/maos.svg' 
-
 import Icon from 'react-native-vector-icons/FontAwesome'
+import {loginAction} from '../../redux/actions/auth'
 
-const SignUp = ({ navigation }) => {
+class Login extends Component {
+    state = {
+        email: '',
+        password: '',
+        message: ''
+    }
+
+    login = () => {
+        const { email, password } = this.state
+        this.props.loginAction(email, password)
+    }
+
+    showAlert = () => {
+        const {message} = this.props.auth
+        if (message!== this.state.message) {
+            this.setState({message})
+            Alert.alert(message)
+        }
+    }
+
+    componentDidUpdate(){
+        this.showAlert()
+    }
+
+    render(){
     return (
         <View style={styles.parent}>
             <View>
@@ -31,14 +56,14 @@ const SignUp = ({ navigation }) => {
                 <Form>
                     <Item floatingLabel>
                         <Label>Email</Label>
-                        <Input />
+                        <Input onChangeText={email=>this.setState({email})}/>
                     </Item>
                     <Item floatingLabel last>
                         <Label>Password</Label>
-                        <Input />
+                        <Input onChangeText={password=>this.setState({password})}/>
                     </Item>
                 </Form>
-                <Button style={styles.btnLogin} block onPress={()=>navigation.navigate("MainApp")}>
+                <Button style={styles.btnLogin} block onPress={this.login}>
                         <Text style={styles.btntext}>LOGIN</Text>
                 </Button>
                 <Button block transparent>
@@ -46,10 +71,17 @@ const SignUp = ({ navigation }) => {
                 </Button>
             </View>
         </View>
-    )
+    )}
 }
 
-export default SignUp
+const mapStateToProps = state => ({
+    auth: state.auth
+})
+const mapDispatchToProps = {
+    loginAction
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
 
 const styles = StyleSheet.create({
     header: {

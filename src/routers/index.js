@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { Component } from 'react'
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { connect } from 'react-redux'
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -30,18 +32,35 @@ const MainApp = () => {
     )
 }
 
-const Route = () => {
-    return (
-        <Stack.Navigator initialRouteName="Splash">
-            <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
-            <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
-            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-            <Stack.Screen name="MainApp" component={MainApp} options={{ headerShown: false }} />
-            <Stack.Screen name="Search" component={Search} options={{ headerShown: false }} />
-            <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
-            <Stack.Screen name="AddNews" component={AddNews} options={{ headerShown: false }} />
-        </Stack.Navigator>
-    )
+class Route extends Component {
+    componentDidMount() {
+        console.log(this.props.auth);
+    }
+
+    render() {
+        return (
+            <NavigationContainer>
+                    {!this.props.auth.isLogin ? (
+                        <Stack.Navigator>
+                            <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
+                            <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
+                            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+                        </Stack.Navigator>
+                    ) : (
+                        <Stack.Navigator>
+                            <Stack.Screen name="MainApp" component={MainApp} options={{ headerShown: false }} />
+                            <Stack.Screen name="Search" component={Search} options={{ headerShown: false }} />
+                            <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
+                            <Stack.Screen name="AddNews" component={AddNews} options={{ headerShown: false }} />
+                        </Stack.Navigator>
+                        )}
+            </NavigationContainer>
+        )
+    }
 }
 
-export default Route
+const mapStateToProps = state => ({
+    auth: state.auth
+})
+
+export default connect(mapStateToProps)(Route)
