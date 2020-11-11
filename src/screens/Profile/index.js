@@ -36,9 +36,12 @@ const Profile = () => {
                         </TouchableOpacity>
                     </View>
                 </Card>
+                <Button tra block style={styles.btnNews} onPress={()=>navigation.navigate('MyNews')}>
+                    <Text>My News</Text>
+                </Button>
             </View>
             <Card style={styles.cardWrite} transparent>
-                <Text>Tulis redaksi pertama Anda</Text>
+                <Text>Tulis redaksi Anda</Text>
                 <Text note>jadi profesional dan melampauinya</Text>
                 <Button style={styles.btnWrite} onPress={() => navigation.navigate("AddNews")} block>
                     <Text style={styles.btntext}>Write</Text>
@@ -107,6 +110,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#A10000',
         marginTop: 10,
         marginLeft: 50,
-        marginRight: 50
+        marginRight: 50,
+        borderRadius: 25
+    },
+    btnNews:{
+        backgroundColor: '#A10000'
     }
 })

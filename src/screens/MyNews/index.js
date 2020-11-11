@@ -1,14 +1,15 @@
 import React from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { Container, Header, Left, Body, Right, Button, Title } from 'native-base';
+
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-const Home = ({ navigation }) => {
+const Favorites = ({navigation}) => {
     return (
-        <>
+        <View>
             <Header style={styles.header} transparent>
                 <Body>
-                    <Title style={styles.text}>Home Page</Title>
+                    <Title style={styles.text}>My News</Title>
                 </Body>
                 <Right>
                     <Button transparent onPress={()=>navigation.navigate("Search")}>
@@ -16,11 +17,11 @@ const Home = ({ navigation }) => {
                     </Button>
                 </Right>
             </Header>
-        </>
+        </View>
     )
 }
 
-export default Home
+export default Favorites
 
 const styles = StyleSheet.create({
     header: {
@@ -30,4 +31,3 @@ const styles = StyleSheet.create({
         color: '#000000',
     }
 })
-
