@@ -1,45 +1,72 @@
 import React from 'react'
 import { StyleSheet, Image, View, ScrollView, TouchableOpacity } from 'react-native'
 import { Card, CardItem, Header, Body, Right, Button, Title, Text, Left } from 'native-base';
+import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-const Home = ({ navigation }) => {
-    return (
-        <>
-            <Header style={styles.header} transparent>
-                <Body>
-                    <Title style={styles.text}>Maos News</Title>
-                </Body>
-                <Right>
-                    <Button transparent onPress={() => navigation.navigate("Search")}>
-                        <Icon name='search' size={20} />
-                    </Button>
-                </Right>
-            </Header>
-            <View style={styles.parent}>
-                <ScrollView>
-                    <TouchableOpacity onPress={()=>navigation.navigate('NewsDetail')}>
-                        <Card>
-                            <CardItem>
-                                <Body>
-                                    <Image style={styles.cardImage} />
-                                    <Text style={styles.headline}>Judul Berite</Text>
-                                    <View style={styles.about}>
-                                        <Text>Penulis</Text>
-                                        <Left />
-                                        <Text note>20/10/2010</Text>
-                                    </View>
-                                </Body>
-                            </CardItem>
-                        </Card>
-                    </TouchableOpacity>
-                </ScrollView>
-            </View>
-        </>
-    )
+import { getNews } from '../../redux/actions/news'
+const url = 'http://192.168.43.70:8080'
+
+class Home extends React.Component {
+    componentDidMount() {
+        this.props.getNews()
+    }
+
+    render() {
+        const { isLoading, data, isError, message } = this.props.news
+        return (
+            <>
+                <Header style={styles.header} transparent>
+                    <Body>
+                        <Title style={styles.text}>Maos News</Title>
+                    </Body>
+                    <Right>
+                        <Button transparent onPress={() => navigation.navigate("Search")}>
+                            <Icon name='search' size={20} />
+                        </Button>
+                    </Right>
+                </Header>
+                <View style={styles.parent}>
+                    <ScrollView>
+                    {!isLoading && !isError && data.length !== 0 && data.map(item => {
+                        return (
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('NewsDetail')}>
+                                    <Card>
+                                        <CardItem>
+                                            <Body>
+                                                <Image style={styles.cardImage} source={`${url}${item.picture}`}/>
+                                                <Text style={styles.headline}>{item.headline}</Text>
+                                                <View style={styles.about}>
+                                                    <Text>{item.author.name}</Text>
+                                                    <Left />
+                                                    <Text note>{item.createdAt}</Text>
+                                                </View>
+                                            </Body>
+                                        </CardItem>
+                                    </Card>
+                                </TouchableOpacity>
+                        )})}
+                    </ScrollView>
+                {isLoading && !isError && (
+                    <Text>Loading</Text>
+                )}
+                {isError && message !== '' && (
+                    <Text>{message}</Text>
+                )}
+                </View>
+            </>
+        )
+    }
 }
 
-export default Home
+const mapStateToProps = state => ({
+    news: state.news
+})
+const mapDispatchToProps = {
+    getNews
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
 
 const styles = StyleSheet.create({
     header: {
@@ -53,7 +80,6 @@ const styles = StyleSheet.create({
         paddingRight: 10
     },
     cardImage: {
-        backgroundColor: '#F0F0F0',
         width: 300,
         height: 175
     },
