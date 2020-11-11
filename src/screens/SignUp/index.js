@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Alert } from 'react-native'
+import { StyleSheet, View, Alert, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import {
     Button, Header, Left, Text,
@@ -9,7 +9,7 @@ import {
 import LogoMaos from '../../assets/images/maos.svg'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import {registerAction} from '../../redux/actions/register'
+import { registerAction } from '../../redux/actions/register'
 
 class SignUp extends Component {
     state = {
@@ -30,14 +30,14 @@ class SignUp extends Component {
     }
 
     showAlert = () => {
-        const {message} = this.props.register
-        if (message!== this.state.message) {
-            this.setState({message})
+        const { message } = this.props.register
+        if (message !== this.state.message) {
+            this.setState({ message })
             Alert.alert(message)
         }
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         this.showAlert()
     }
 
@@ -54,33 +54,37 @@ class SignUp extends Component {
                         <Right />
                     </Header>
                 </View>
-                <View style={styles.header}>
-                    <LogoMaos />
-                    <Text style={styles.text}>Sign Up</Text>
-                </View>
-                <View style={styles.register}>
-                    <Form>
-                        <Item floatingLabel >
-                            <Label>Username</Label>
-                            <Input onChangeText={name=>this.setState({name})} />
-                        </Item>
-                        <Item floatingLabel>
-                            <Label>Email</Label>
-                            <Input onChangeText={email=>this.setState({email})} />
-                        </Item>
-                        <Item floatingLabel last>
-                            <Label>Password</Label>
-                            <Input type='password' onChangeText={password=>this.setState({password})} />
-                        </Item>
-                    </Form>
-                    <Button style={styles.btnLogin} onPress={this.signUp} block>
-                        <Text style={styles.btntext}>Sign Up</Text>
-                    </Button>
-                    <Button block transparent onPress={()=>this.props.navigation.navigate('Login')}>
-                        <Text style={styles.loginTxt}>Login</Text>
-                    </Button>
-                </View>
+                <ScrollView>
+                    <View style={styles.header}>
+                        <LogoMaos />
+                        <Text style={styles.text}>Sign Up</Text>
+                    </View>
+                    <View style={styles.register}>
+                        <Form>
+                            <Item floatingLabel >
+                                <Label>Username</Label>
+                                <Input onChangeText={name => this.setState({ name })} />
+                            </Item>
+                            <Item floatingLabel>
+                                <Label>Email</Label>
+                                <Input onChangeText={email => this.setState({ email })} />
+                            </Item>
+                            <Item floatingLabel last>
+                                <Label>Password</Label>
+                                <Input type='password' onChangeText={password => this.setState({ password })} />
+                            </Item>
+                        </Form>
+                        <Button style={styles.btnLogin} onPress={this.signUp} block>
+                            <Text style={styles.btntext}>Sign Up</Text>
+                        </Button>
+                        <View style={styles.footer}>
+                            <Text >Already have an account? </Text>
+                            <Text style={styles.loginTxt}>Login</Text>
+                        </View>
+                    </View>
+                </ScrollView>
             </View>
+
         )
     }
 }
@@ -129,6 +133,11 @@ const styles = StyleSheet.create({
         color: "#A00000"
     },
     loginTxt: {
-        color: '#A00000'
+        color: '#A00000',
+    },
+    footer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 15
     }
 })

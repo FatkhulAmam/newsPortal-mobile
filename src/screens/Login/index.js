@@ -63,11 +63,12 @@ class Login extends Component {
                         <Input onChangeText={password=>this.setState({password})}/>
                     </Item>
                 </Form>
+                <Button block transparent>
+                    <Right />
+                    <Text style={styles.forgot}>Forgot My Password</Text>
+                </Button>
                 <Button style={styles.btnLogin} block onPress={this.login}>
                         <Text style={styles.btntext}>LOGIN</Text>
-                </Button>
-                <Button block transparent>
-                    <Text style={styles.loginTxt}>Forgot My Password</Text>
                 </Button>
             </View>
         </View>
@@ -93,8 +94,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     },
     register: {
-        marginLeft: 10,
-        marginRight: 10,
+        marginLeft: 15,
+        marginRight: 15,
         marginTop: 20
     },
     input: {
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
     },
     btnLogin: {
         borderRadius: 25,
-        marginTop: 25,
+        marginTop: 20,
         backgroundColor: '#A00000'
     },
     btntext: {
@@ -117,7 +118,8 @@ const styles = StyleSheet.create({
     input: {
         color: "#A00000"
     },
-    loginTxt: {
+    forgot: {
+        marginTop: 15,
         color: '#A00000'
     }
 })
