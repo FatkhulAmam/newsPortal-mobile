@@ -3,13 +3,18 @@ import { StyleSheet, Image, View, ScrollView, TouchableOpacity } from 'react-nat
 import { Card, CardItem, Header, Body, Right, Button, Title, Text, Left } from 'native-base';
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { API_URL } from '@env'
 
 import { getNews } from '../../redux/actions/news'
-const url = 'http://192.168.43.70:8080'
 
 class Home extends React.Component {
     componentDidMount() {
         this.props.getNews()
+    }
+
+    showDetail = () => {
+        this.props.navigation.navigate("NewsDetail")
+        console.log(this.props.news.data[0].id);
     }
 
     render() {
@@ -30,11 +35,11 @@ class Home extends React.Component {
                     <ScrollView>
                     {!isLoading && !isError && data.length !== 0 && data.map(item => {
                         return (
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('NewsDetail')}>
+                                <TouchableOpacity key="uniqueId1" onPress={this.showDetail}>
                                     <Card>
                                         <CardItem>
                                             <Body>
-                                                <Image style={styles.cardImage} source={`${url}${item.picture}`}/>
+                                                <Image style={styles.cardImage} source={{uri:`${API_URL}${item.picture}`}}/>
                                                 <Text style={styles.headline}>{item.headline}</Text>
                                                 <View style={styles.about}>
                                                     <Text>{item.author.name}</Text>
@@ -82,7 +87,8 @@ const styles = StyleSheet.create({
     },
     cardImage: {
         width: 300,
-        height: 175
+        height: 175,
+        backgroundColor: '#E8E8E8'
     },
     headline: {
         fontSize: 25,

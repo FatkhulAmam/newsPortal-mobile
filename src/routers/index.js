@@ -12,6 +12,7 @@ const Tab = createBottomTabNavigator();
 //import screens
 import Splash from '../screens/Splash'
 import Home from '../screens/Home'
+import ForgotPassword from '../screens/ForgotPassword'
 import Login from '../screens/Login'
 import SignUp from '../screens/SignUp'
 import Activities from '../screens/Activities';
@@ -47,6 +48,7 @@ class Route extends Component {
                             <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
                             <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
                             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+                            <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
                         </Stack.Navigator>
                     ) : (
                         <Stack.Navigator>

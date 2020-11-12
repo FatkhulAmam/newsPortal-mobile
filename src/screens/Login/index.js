@@ -1,14 +1,16 @@
-import React, {Component} from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native'
-import {connect} from 'react-redux'
+import React, { Component } from 'react'
+import { StyleSheet, View, Text, TextInput, Alert } from 'react-native'
+import * as yup from 'yup'
+import { Formik } from 'formik'
+import { connect } from 'react-redux'
 import {
     Button, Header, Left,
     Right, Label,
     Form, Item, Input
 } from 'native-base';
-import LogoMaos from '../../assets/images/maos.svg' 
+import LogoMaos from '../../assets/images/maos.svg'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import {loginAction} from '../../redux/actions/auth'
+import { loginAction } from '../../redux/actions/auth'
 
 class Login extends Component {
     state = {
@@ -23,56 +25,85 @@ class Login extends Component {
     }
 
     showAlert = () => {
-        const {message} = this.props.auth
-        if (message!== this.state.message) {
-            this.setState({message})
+        const { message } = this.props.auth
+        if (message !== this.state.message) {
+            this.setState({ message })
             Alert.alert(message)
         }
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         this.showAlert()
     }
 
-    render(){
-    return (
-        <View style={styles.parent}>
-            <View>
-                <Header transparent>
-                    <Left>
-                        <Button transparent>
-                            <Icon name='angle-left' size={30} />
-                        </Button>
-                    </Left>
-                    <Right />
-                </Header>
+    render() {
+        return (
+            <View style={styles.parent}>
+                <View>
+                    <Header transparent>
+                        <Left>
+                            <Button transparent>
+                                <Icon name='angle-left' size={30} />
+                            </Button>
+                        </Left>
+                        <Right />
+                    </Header>
+                </View>
+                <View style={styles.header}>
+                    <LogoMaos />
+                    <Text style={styles.text}>LOGIN</Text>
+                    <Text>Have an maos account</Text>
+                </View>
+                <Formik
+                    initialValues={{
+                        email: '',
+                        password: ''
+                    }}
+                    onSubmit={values => Alert.alert(JSON.stringify(values))}
+                    validationSchema={yup.object().shape({
+                        email: yup
+                            .string()
+                            .email()
+                            .required(),
+                        password: yup
+                            .string()
+                            .min(8)
+                            .max(16, 'Password should not excced 16 chars.')
+                            .required(),
+                    })}
+                >
+                    {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
+                        <View style={styles.register}>
+                            <Form>
+                                <Item floatingLabel>
+                                    <Label>Email</Label>
+                                    <Input
+                                        onChangeText={email => this.setState({ email })}
+                                        onBlur={() => setFieldTouched('email')}
+                                    />
+                                    {touched.email && errors.email &&
+                                        <Text style={{ fontSize: 12, color: '#FF0D10' }}>{errors.email}</Text>
+                                    }
+                                </Item>
+                                <Item floatingLabel last>
+                                    <Label>Password</Label>
+                                    <Input
+                                        onChangeText={password => this.setState({ password })}
+                                    />
+                                </Item>
+                            </Form>
+                            <Button block transparent onPress={() => this.props.navigation.navigate('ForgotPassword')}>
+                                <Right />
+                                <Text style={styles.forgot}>Forgot My Password</Text>
+                            </Button>
+                            <Button style={styles.btnLogin} block onPress={this.login}>
+                                <Text style={styles.btntext}>LOGIN</Text>
+                            </Button>
+                        </View>
+                    )}</Formik>
             </View>
-            <View style={styles.header}>
-                <LogoMaos />
-                <Text style={styles.text}>LOGIN</Text>
-                <Text>Have an maos account</Text>
-            </View>
-            <View style={styles.register}>
-                <Form>
-                    <Item floatingLabel>
-                        <Label>Email</Label>
-                        <Input onChangeText={email=>this.setState({email})}/>
-                    </Item>
-                    <Item floatingLabel last>
-                        <Label>Password</Label>
-                        <Input onChangeText={password=>this.setState({password})}/>
-                    </Item>
-                </Form>
-                <Button block transparent>
-                    <Right />
-                    <Text style={styles.forgot}>Forgot My Password</Text>
-                </Button>
-                <Button style={styles.btnLogin} block onPress={this.login}>
-                        <Text style={styles.btntext}>LOGIN</Text>
-                </Button>
-            </View>
-        </View>
-    )}
+        )
+    }
 }
 
 const mapStateToProps = state => ({

@@ -2,10 +2,10 @@ import React from 'react'
 import { StyleSheet, View, TextInput, ScrollView, TouchableOpacity, Image } from 'react-native'
 import { Header, Left, Text, Button, Body, Card, CardItem } from 'native-base'
 import { connect } from 'react-redux'
+import { API_URL } from '@env'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { getSearch } from '../../redux/actions/search'
-const url = 'http://192.168.43.70:8080'
 
 class Search extends React.Component {
     state = {
@@ -40,7 +40,7 @@ class Search extends React.Component {
                                     <Card>
                                         <CardItem>
                                             <Body>
-                                                <Image style={styles.cardImage} source={`${url}${item.picture}`} />
+                                                <Image style={styles.cardImage} source={{uri: `${API_URL}${item.picture}`}} />
                                                 <Text style={styles.headline}>{item.headline}</Text>
                                                 <View style={styles.about}>
                                                     <Text>{item.author.name}</Text>

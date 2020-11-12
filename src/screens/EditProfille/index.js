@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { StyleSheet, View, Image, TouchableOpacity, ScrollView } from 'react-native'
-import { Container, Header, Text, Form, Item, Input, Label, Body, Right, Button, Title } from 'native-base'
+import { Header, Text, Form, Item, Input, Label, Body, Right, Button, Title } from 'native-base'
 import { useDispatch, useSelector } from 'react-redux'
-
-import profile from '../../assets/images/user.png'
+import ImagePicker from 'react-native-image-crop-picker';
+import { API_URL } from '@env'
 
 import { getProfile } from '../../redux/actions/profile'
 
@@ -12,9 +12,20 @@ const EditProfile = () => {
     const token = useSelector(state=>state.auth.token)
     const dispatch = useDispatch()
     useEffect(()=>{
-        console.log(user)
         dispatch(getProfile(token))
     },[dispatch, token])
+
+    const [Photo, setPhoto] = useState(`${API_URL}${user.data.photo}`)
+
+    const choosePhotoGalery = () => {
+        ImagePicker.openPicker({
+            width: 300,
+            height: 300,
+            cropping: true
+          }).then(image => {
+              setPhoto(Photo.path)
+          });
+    }
 
     return (
         <>
@@ -34,8 +45,8 @@ const EditProfile = () => {
                         <View style={styles.component}>
                             <View>
                                 <View style={styles.userBio}>
-                                    <Image style={styles.image} source={profile} />
-                                    <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
+                                    <Image style={styles.image} source={{uri: Photo}} />
+                                    <TouchableOpacity onPress={choosePhotoGalery}>
                                         <Text style={styles.pick}>Choose Image</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -93,8 +104,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     image: {
-        height: 90,
-        width: 90,
+        height: 100,
+        width: 100,
         borderRadius: 50
     },
     pick: {

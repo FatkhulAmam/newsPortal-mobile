@@ -1,10 +1,9 @@
 import React, {useEffect} from 'react'
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'
-import { Header, Left, Body, Text, Right, Button, Card, CardItem } from 'native-base';
+import { Header, Left, Text, Right, Button, Card } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { useSelector, useDispatch } from 'react-redux'
-
-import profile from '../../assets/images/user.png'
+import { API_URL } from '@env'
 
 import { getProfile } from '../../redux/actions/profile'
 
@@ -29,7 +28,7 @@ const Profile = ({navigation}) => {
                 </Header>
                 {Object.keys(user.data).length && (
                     <Card style={styles.bioCard} transparent>
-                        <Image style={styles.image} source={profile} />
+                        <Image style={styles.image} source={{uri: `${API_URL}${user.data.photo}`}} />
                         <Text style={styles.name}>{user.data.name}</Text>
                         <Text note>{user.data.email}</Text>
                         <Left />
@@ -81,8 +80,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     },
     image: {
-        height: 90,
-        width: 90,
+        height: 100,
+        width: 100,
         borderRadius: 50,
         marginBottom: 10
     },
