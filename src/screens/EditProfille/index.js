@@ -1,91 +1,78 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { StyleSheet, View, Image, TouchableOpacity, ScrollView } from 'react-native'
 import { Container, Header, Text, Form, Item, Input, Label, Body, Right, Button, Title } from 'native-base'
-import {connect} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import profile from '../../assets/images/user.png'
 
 import { getProfile } from '../../redux/actions/profile'
 
-class EditProfile extends React.Component {
-    componentDidMount() {
-        this.props.getProfile()
-    }
+const EditProfile = () => {
+    const user = useSelector(state=>state.profile)
+    const token = useSelector(state=>state.auth.token)
+    const dispatch = useDispatch()
+    useEffect(()=>{
+        console.log(user)
+        dispatch(getProfile(token))
+    },[dispatch, token])
 
-    render() {
-        return (
-            <>
-                <View style={styles.parent}>
-                    <Header transparent>
-                        <Body>
-                            <Title style={styles.text}>Edit profile</Title>
-                        </Body>
-                        <Right>
-                            <Button transparent onPress={() => navigation.navigate("Profile")}>
-                                <Text style={styles.savetxt}>save</Text>
-                            </Button>
-                        </Right>
-                    </Header>
-                    <ScrollView>
-                        {!isLoading && !isError && data.length !== 0 && data.map(item => {
-                            return (
-                                <View style={styles.component}>
-                                    <View>
-                                        <View style={styles.userBio}>
-                                            <Image style={styles.image} source={profile} />
-                                            <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
-                                                <Text style={styles.pick}>Choose Image</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                    <View>
-                                        <Form>
-                                            <Item floatingLabel>
-                                                <Label>Username</Label>
-                                                <Input value={item.name} />
-                                            </Item>
-                                            <Item floatingLabel >
-                                                <Label>email</Label>
-                                                <Input />
-                                            </Item>
-                                            <Item floatingLabel >
-                                                <Label>password</Label>
-                                                <Input value={item.password} />
-                                            </Item>
-                                            <Item floatingLabel last>
-                                                <Label>gender</Label>
-                                                <Input value={item.gender} />
-                                            </Item>
-                                            <Item floatingLabel last>
-                                                <Label>birth</Label>
-                                                <Input value={item.birth} />
-                                            </Item>
-                                        </Form>
-                                    </View>
+    return (
+        <>
+            <View style={styles.parent}>
+                <Header transparent>
+                    <Body>
+                        <Title style={styles.text}>Edit profile</Title>
+                    </Body>
+                    <Right>
+                        <Button transparent onPress={() => navigation.navigate("Profile")}>
+                            <Text style={styles.savetxt}>save</Text>
+                        </Button>
+                    </Right>
+                </Header>
+                <ScrollView>
+                    {Object.keys(user.data).length && (
+                        <View style={styles.component}>
+                            <View>
+                                <View style={styles.userBio}>
+                                    <Image style={styles.image} source={profile} />
+                                    <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
+                                        <Text style={styles.pick}>Choose Image</Text>
+                                    </TouchableOpacity>
                                 </View>
-                            )
-                        })}
-                    </ScrollView>
-                    {isLoading && !isError && (
-                        <Text>Loading</Text>
+                            </View>
+                            <View>
+                                <Form>
+                                    <Item floatingLabel>
+                                        <Label>Username</Label>
+                                        <Input value={user.data.name} />
+                                    </Item>
+                                    <Item floatingLabel >
+                                        <Label>email</Label>
+                                        <Input value={user.data.email}/>
+                                    </Item>
+                                    <Item floatingLabel >
+                                        <Label>password</Label>
+                                        <Input value={user.data.password} />
+                                    </Item>
+                                    <Item floatingLabel>
+                                        <Label>gender</Label>
+                                        <Input value={user.data.gender} />
+                                    </Item>
+                                    <Item floatingLabel last>
+                                        <Label>birth</Label>
+                                        <Input value={user.data.birth_date} />
+                                    </Item>
+                                </Form>
+                            </View>
+                        </View>
                     )}
-                    {isError && message !== '' && (
-                        <Text>{message}</Text>
-                    )}
-                </View>
-            </>
-        )
-    }
+                </ScrollView>
+            </View>
+        </>
+    )
 }
 
-const mapStateToProps = state => ({
-    profile: state.profile
-})
-const mapDispatchToProps = {
-    getProfile
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditProfile)
+export default EditProfile
 
 const styles = StyleSheet.create({
     parent: {
