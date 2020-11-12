@@ -6,6 +6,7 @@ import news from './news'
 import profile from './profile'
 import addNews from './addNews'
 import category from './category'
+import search from './search'
 
 export default combineReducers({
     auth,
@@ -13,5 +14,6 @@ export default combineReducers({
     news,
     profile,
     addNews,
-    category
+    category,
+    search
 })
