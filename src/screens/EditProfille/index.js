@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Image, TouchableOpacity, ScrollView } from 'react-native'
-import { Container, Header, Text, Form, Item, Input, Label, Body, Right, Button, Title } from 'native-base';
-import { RadioButton } from 'react-native-paper';
+import { Container, Header, Text, Form, Item, Input, Label, Body, Right, Button, Title } from 'native-base'
+import {connect} from 'react-redux'
 
 import profile from '../../assets/images/user.png'
 

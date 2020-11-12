@@ -21,7 +21,7 @@ class Home extends React.Component {
                         <Title style={styles.text}>Maos News</Title>
                     </Body>
                     <Right>
-                        <Button transparent onPress={() => navigation.navigate("Search")}>
+                        <Button transparent onPress={() => this.props.navigation.navigate("Search")}>
                             <Icon name='search' size={20} />
                         </Button>
                     </Right>

@@ -14,12 +14,13 @@ class Profile extends React.Component {
     }
 
     render() {
+        const { isLoading, data, isError, message } = this.props.profile
         return (
             <>
                 <View style={styles.parent}>
                     <Header style={styles.header} transparent>
                         <Right>
-                            <Button transparent>
+                            <Button transparent onPress={()=> this.props.navigation.navigate("Search")}>
                                 <Icon name='search' size={22} />
                             </Button>
                         </Right>
@@ -42,14 +43,14 @@ class Profile extends React.Component {
                             </Card>
                         )
                     })}
-                    <Button tra block style={styles.btnNews} onPress={() => navigation.navigate('MyNews')}>
+                    <Button tra block style={styles.btnNews} onPress={() => this.props.navigation.navigate('MyNews')}>
                         <Text>My News</Text>
                     </Button>
                 </View>
                 <Card style={styles.cardWrite} transparent>
                     <Text>Tulis redaksi Anda</Text>
                     <Text note>jadi profesional dan melampauinya</Text>
-                    <Button style={styles.btnWrite} onPress={() => navigation.navigate("AddNews")} block>
+                    <Button style={styles.btnWrite} onPress={() => this.props.navigation.navigate("AddNews")} block>
                         <Text style={styles.btntext}>Write</Text>
                     </Button>
                 </Card>
