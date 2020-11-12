@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
     },
     parent: {
         paddingLeft: 10,
-        paddingRight: 10
+        paddingRight: 10,
+        marginBottom: 95
     },
     cardImage: {
         width: 300,

@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 import {getCategory} from '../../redux/actions/category'
 import {makeNewsAction} from '../../redux/actions/addNews'
+import auth from '../../redux/reducers/auth';
 
 class AddNews extends Component {
     state = {
@@ -19,12 +20,11 @@ class AddNews extends Component {
     makeNews = () => {
         const { headline, category, description } = this.state
         const data = {
-            author_id: '1',
             headline: headline,
             category: category,
             description: description
         }
-        this.props.makeNewsAction(data)
+        this.props.makeNewsAction(data, this.props.auth.token)
     }
     
     showAlert = () => {
@@ -89,7 +89,8 @@ class AddNews extends Component {
 
 const mapStateToProps = state => ({
     category: state.category,
-    addNews: state.addNews
+    addNews: state.addNews,
+    auth: state.auth
 })
 const mapDispatchToProps = {
     getCategory,
