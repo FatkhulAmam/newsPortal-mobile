@@ -1,9 +1,8 @@
-import http from '../../helpers/http'
-import qs from 'qs'
+import http from '../../helpers/http';
 
 const getProfile = (token) => ({
-    type: 'GET_USER',
-    payload: http(token).get('/user/')
-})
+  type: 'GET_USER',
+  payload: http(token).get('user/'),
+});
 
-export {getProfile}
+export {getProfile};

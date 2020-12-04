@@ -1,9 +1,24 @@
-import http from '../../helpers/http'
-import qs from 'qs'
+import http from '../../helpers/http';
+import qs from 'qs';
 
-const getNews = (data) => ({
-    type: 'GET_NEWS',
-    payload: http().get('/news/?sort[createdAt]=desc', qs.stringify(data))
-})
+const getNews = (token, data) => ({
+  type: 'GET_NEWS',
+  payload: http(token).get('news/?sort[createdAt]=desc', qs.stringify(data)),
+});
 
-export {getNews}
+const makeNewsAction = (data, token) => ({
+  type: 'MAKE_NEWS',
+  payload: http(token).post('news', qs.stringify(data)),
+});
+
+const getDetail = (token, id) => ({
+  type: 'GET_DETAIL',
+  payload: http(token).get(`news/${id}`),
+});
+
+const getSearch = (keyword, data) => ({
+  type: 'GET_SEARCH',
+  payload: http().get(`news/?search[headline]=${keyword}`, qs.stringify(data)),
+});
+
+export {getNews, makeNewsAction, getDetail, getSearch};
