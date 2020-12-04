@@ -26,7 +26,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {getCategory} from '../../redux/actions/category';
-import {makeNewsAction} from '../../redux/actions/addNews';
+import {makeNewsAction} from '../../redux/actions/news';
 
 class AddNews extends Component {
   state = {
