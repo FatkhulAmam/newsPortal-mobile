@@ -25,24 +25,21 @@ const Profile = ({navigation}) => {
             </Button>
           </Right>
         </Header>
-        {Object.keys(user.data).length && (
-          <Card style={styles.bioCard} transparent>
-            <Image
-              style={styles.image}
-              source={{uri: `${API_URL}${user.data.photo}`}}
-            />
-            <Left />
-            <View style={styles.menu}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('EditProfile')}>
-                <Text style={styles.edit}>Edit</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => dispatch({type: 'LOGOUT'})}>
-                <Text style={styles.logoutTxt}>Logout</Text>
-              </TouchableOpacity>
-            </View>
-          </Card>
-        )}
+        <Card style={styles.bioCard} transparent>
+          <Image
+            style={styles.image}
+            source={{uri: `${API_URL}${user.data.photo}`}}
+          />
+          <View style={styles.menu}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('EditProfile')}>
+              <Text style={styles.edit}>Edit</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => dispatch({type: 'LOGOUT'})}>
+              <Text style={styles.logoutTxt}>Logout</Text>
+            </TouchableOpacity>
+          </View>
+        </Card>
         <Button
           tra
           block

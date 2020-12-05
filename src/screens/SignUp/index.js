@@ -11,38 +11,33 @@ import {
 import {connect} from 'react-redux';
 import {Button, Text, Label, Form, Item, Input} from 'native-base';
 import LogoMaos from '../../assets/images/maos.svg';
+import {Formik} from 'formik';
+import * as yup from 'yup';
 
 import {registerAction} from '../../redux/actions/auth';
 
+const registerValidationSchema = yup.object().shape({
+  name: yup.string().required('Fullname is required'),
+  email: yup
+    .string()
+    .email('Must have @ and .com')
+    .required('Email address is required'),
+  password: yup
+    .string()
+    .min(8, ({min}) => `Password min ${min} character`)
+    .required('Password required'),
+});
+
 class SignUp extends Component {
-  state = {
-    name: '',
-    email: '',
-    password: '',
-    message: '',
-  };
-
-  signUp = () => {
-    const {name, email, password} = this.state;
-    const data = {
-      name: name,
-      email: email,
-      password: password,
-    };
+  signUp = (data) => {
     this.props.registerAction(data);
-  };
-
-  showAlert = () => {
     const {message} = this.props.register;
     if (message !== this.state.message) {
       this.setState({message});
       Alert.alert(message);
     }
+    this.props.navigation.navigate('Login');
   };
-
-  componentDidUpdate() {
-    this.showAlert();
-  }
 
   render() {
     return (
@@ -54,43 +49,83 @@ class SignUp extends Component {
               <LogoMaos />
               <Text style={styles.text}>Sign Up</Text>
             </View>
-            <View style={styles.register}>
-              <Form>
-                <Item floatingLabel>
-                  <Label>Username</Label>
-                  <Input onChangeText={(name) => this.setState({name})} />
-                </Item>
-                <Item floatingLabel>
-                  <Label>Email</Label>
-                  <Input onChangeText={(email) => this.setState({email})} />
-                </Item>
-                <Item floatingLabel last>
-                  <Label>Password</Label>
-                  <Input
-                    type="password"
-                    onChangeText={(password) => this.setState({password})}
-                  />
-                </Item>
-              </Form>
-              <Button style={styles.btnLogin} onPress={this.signUp} block>
-                {this.props.register.isLoadingRegister === false ? (
-                  <Text style={styles.btntext}>Sign Up</Text>
-                ) : (
-                  <ActivityIndicator
-                    color="#ffffff"
-                    animating={this.props.register.isLoading}
-                    style={styles.indicator}
-                  />
-                )}
-              </Button>
-              <View style={styles.footer}>
-                <Text>Already have an account? </Text>
-                <TouchableOpacity
-                  onPress={() => this.props.navigation.navigate('Login')}>
-                  <Text style={styles.loginTxt}>Login</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+            <Formik
+              validationSchema={registerValidationSchema}
+              initialValues={{
+                name: '',
+                email: '',
+                password: '',
+              }}
+              onSubmit={(values) => this.signUp(values)}>
+              {({
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                values,
+                errors,
+                isValid,
+                touched,
+              }) => (
+                <View style={styles.register}>
+                  <Form>
+                    <Item floatingLabel>
+                      <Label>Username</Label>
+                      <Input
+                        name="name"
+                        onChangeText={handleChange('name')}
+                        onBlur={handleBlur('name')}
+                        value={values.name}
+                      />
+                    </Item>
+                    {touched.name && errors.name && (
+                      <Text style={styles.textError}>{errors.name}</Text>
+                    )}
+                    <Item floatingLabel>
+                      <Label>Email</Label>
+                      <Input
+                        onChangeText={handleChange('email')}
+                        onBlur={handleBlur('email')}
+                        value={values.email}
+                        keyboardType="email-address"
+                      />
+                    </Item>
+                    {touched.email && errors.email && (
+                      <Text style={styles.textError}>{errors.email}</Text>
+                    )}
+                    <Item floatingLabel>
+                      <Label>Password</Label>
+                      <Input
+                        secureTextEntry
+                        onChangeText={handleChange('password')}
+                        onBlur={handleBlur('password')}
+                        value={values.password}
+                      />
+                    </Item>
+                    {touched.password && errors.password && (
+                      <Text style={styles.textError}>{errors.password}</Text>
+                    )}
+                  </Form>
+                  <Button style={styles.btnLogin} onPress={handleSubmit} block>
+                    {this.props.register.isLoadingRegister === false ? (
+                      <Text style={styles.btntext}>Sign Up</Text>
+                    ) : (
+                      <ActivityIndicator
+                        color="#ffffff"
+                        animating={this.props.register.isLoading}
+                        style={styles.indicator}
+                      />
+                    )}
+                  </Button>
+                  <View style={styles.footer}>
+                    <Text>Already have an account? </Text>
+                    <TouchableOpacity
+                      onPress={() => this.props.navigation.navigate('Login')}>
+                      <Text style={styles.loginTxt}>Login</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              )}
+            </Formik>
           </ScrollView>
         </View>
       </>
@@ -121,6 +156,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     marginTop: 20,
+  },
+  textError: {
+    fontSize: 10,
+    color: 'red',
+    marginLeft: 15,
+    fontStyle: 'italic',
   },
   input: {
     height: 40,
