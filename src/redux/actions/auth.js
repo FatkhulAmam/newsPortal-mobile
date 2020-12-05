@@ -1,9 +1,9 @@
 import http from '../../helpers/http';
 import qs from 'qs';
 
-const loginAction = (email, password) => ({
+const loginAction = (data) => ({
   type: 'AUTH_USER',
-  payload: http().post('auth/login', qs.stringify({email, password})),
+  payload: http().post('auth/login', qs.stringify({data})),
 });
 
 const registerAction = (data) => ({

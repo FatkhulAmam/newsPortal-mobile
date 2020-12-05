@@ -31,12 +31,13 @@ const registerValidationSchema = yup.object().shape({
 class SignUp extends Component {
   signUp = (data) => {
     this.props.registerAction(data);
-    const {message} = this.props.register;
-    if (message !== this.state.message) {
-      this.setState({message});
+    const {message, isError} = this.props.register;
+    if (isError) {
       Alert.alert(message);
+    } else {
+      Alert.alert(message);
+      this.props.navigation.navigate('Login');
     }
-    this.props.navigation.navigate('Login');
   };
 
   render() {
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
   },
   textError: {
     fontSize: 10,
-    color: 'red',
+    color: '#FF0D10',
     marginLeft: 15,
     fontStyle: 'italic',
   },

@@ -17,29 +17,22 @@ import LogoMaos from '../../assets/images/maos.svg';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {loginAction} from '../../redux/actions/auth';
 
+const loginValidationSchema = yup.object().shape({
+  name: yup.string().required('Fullname is required'),
+  email: yup
+    .string()
+    .email('Must have @ and .com')
+    .required('Email address is required'),
+  password: yup
+    .string()
+    .min(8, ({min}) => `Password min ${min} character`)
+    .required('Password required'),
+});
+
 class Login extends Component {
-  state = {
-    email: '',
-    password: '',
-    message: '',
+  dologin = (data) => {
+    this.props.loginAction(data);
   };
-
-  login = () => {
-    const {email, password} = this.state;
-    this.props.loginAction(email, password);
-  };
-
-  showAlert = () => {
-    const {message} = this.props.auth;
-    if (message !== this.state.message) {
-      this.setState({message});
-      Alert.alert(message);
-    }
-  };
-
-  componentDidUpdate() {
-    this.showAlert();
-  }
 
   render() {
     return (
@@ -61,46 +54,47 @@ class Login extends Component {
           <Text>Have an maos account</Text>
         </View>
         <Formik
+          validationSchema={loginValidationSchema}
           initialValues={{
             email: '',
             password: '',
           }}
-          onSubmit={(values) => Alert.alert(JSON.stringify(values))}
-          validationSchema={yup.object().shape({
-            email: yup.string().email().required(),
-            password: yup
-              .string()
-              .min(8)
-              .max(16, 'Password should not excced 16 chars.')
-              .required(),
-          })}>
+          onSubmit={(values) => this.dologin(values)}>
           {({
-            values,
             handleChange,
-            errors,
-            setFieldTouched,
-            touched,
-            isValid,
+            handleBlur,
             handleSubmit,
+            values,
+            errors,
+            isValid,
+            touched,
           }) => (
             <View style={styles.register}>
               <Form>
                 <Item floatingLabel>
                   <Label>Email</Label>
                   <Input
-                    onChangeText={(email) => this.setState({email})}
-                    onBlur={() => setFieldTouched('email')}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
+                    keyboardType="email-address"
                   />
-                  {touched.email && errors.email && (
-                    <Text style={styles.textError}>{errors.email}</Text>
-                  )}
                 </Item>
+                {touched.email && errors.email && (
+                  <Text style={styles.textError}>{errors.email}</Text>
+                )}
                 <Item floatingLabel last>
                   <Label>Password</Label>
                   <Input
-                    onChangeText={(password) => this.setState({password})}
+                    secureTextEntry
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    value={values.password}
                   />
                 </Item>
+                {touched.password && errors.password && (
+                  <Text style={styles.textError}>{errors.password}</Text>
+                )}
               </Form>
               <Button
                 block
@@ -111,7 +105,7 @@ class Login extends Component {
                 <Right />
                 <Text style={styles.forgot}>Forgot My Password</Text>
               </Button>
-              <Button style={styles.btnLogin} block onPress={this.login}>
+              <Button style={styles.btnLogin} block onPress={handleSubmit}>
                 <Text style={styles.btntext}>LOGIN</Text>
               </Button>
             </View>
@@ -168,7 +162,9 @@ const styles = StyleSheet.create({
     color: '#A00000',
   },
   textError: {
-    fontSize: 12,
+    fontSize: 10,
     color: '#FF0D10',
+    marginLeft: 15,
+    fontStyle: 'italic',
   },
 });
