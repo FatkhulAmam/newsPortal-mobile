@@ -6,4 +6,9 @@ const loginAction = (email, password) => ({
   payload: http().post('auth/login', qs.stringify({email, password})),
 });
 
-export {loginAction};
+const registerAction = (data) => ({
+  type: 'MAKE_ACCOUNT',
+  payload: http().post('auth/register/', qs.stringify(data)),
+});
+
+export {loginAction, registerAction};

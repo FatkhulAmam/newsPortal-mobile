@@ -5,23 +5,14 @@ import {
   Alert,
   ScrollView,
   TouchableOpacity,
+  StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {
-  Button,
-  Header,
-  Left,
-  Text,
-  Right,
-  Label,
-  Form,
-  Item,
-  Input,
-} from 'native-base';
+import {Button, Text, Label, Form, Item, Input} from 'native-base';
 import LogoMaos from '../../assets/images/maos.svg';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {registerAction} from '../../redux/actions/register';
+import {registerAction} from '../../redux/actions/auth';
 
 class SignUp extends Component {
   state = {
@@ -55,59 +46,60 @@ class SignUp extends Component {
 
   render() {
     return (
-      <View style={styles.parent}>
-        <View>
-          <Header transparent>
-            <Left>
-              <Button transparent>
-                <Icon name="angle-left" size={30} />
-              </Button>
-            </Left>
-            <Right />
-          </Header>
-        </View>
-        <ScrollView>
-          <View style={styles.header}>
-            <LogoMaos />
-            <Text style={styles.text}>Sign Up</Text>
-          </View>
-          <View style={styles.register}>
-            <Form>
-              <Item floatingLabel>
-                <Label>Username</Label>
-                <Input onChangeText={(name) => this.setState({name})} />
-              </Item>
-              <Item floatingLabel>
-                <Label>Email</Label>
-                <Input onChangeText={(email) => this.setState({email})} />
-              </Item>
-              <Item floatingLabel last>
-                <Label>Password</Label>
-                <Input
-                  type="password"
-                  onChangeText={(password) => this.setState({password})}
-                />
-              </Item>
-            </Form>
-            <Button style={styles.btnLogin} onPress={this.signUp} block>
-              <Text style={styles.btntext}>Sign Up</Text>
-            </Button>
-            <View style={styles.footer}>
-              <Text>Already have an account? </Text>
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('Login')}>
-                <Text style={styles.loginTxt}>Login</Text>
-              </TouchableOpacity>
+      <>
+        <View style={styles.parent}>
+          <StatusBar backgroundColor={'#A00000'} />
+          <ScrollView>
+            <View style={styles.header}>
+              <LogoMaos />
+              <Text style={styles.text}>Sign Up</Text>
             </View>
-          </View>
-        </ScrollView>
-      </View>
+            <View style={styles.register}>
+              <Form>
+                <Item floatingLabel>
+                  <Label>Username</Label>
+                  <Input onChangeText={(name) => this.setState({name})} />
+                </Item>
+                <Item floatingLabel>
+                  <Label>Email</Label>
+                  <Input onChangeText={(email) => this.setState({email})} />
+                </Item>
+                <Item floatingLabel last>
+                  <Label>Password</Label>
+                  <Input
+                    type="password"
+                    onChangeText={(password) => this.setState({password})}
+                  />
+                </Item>
+              </Form>
+              <Button style={styles.btnLogin} onPress={this.signUp} block>
+                {this.props.register.isLoadingRegister === false ? (
+                  <Text style={styles.btntext}>Sign Up</Text>
+                ) : (
+                  <ActivityIndicator
+                    color="#ffffff"
+                    animating={this.props.register.isLoading}
+                    style={styles.indicator}
+                  />
+                )}
+              </Button>
+              <View style={styles.footer}>
+                <Text>Already have an account? </Text>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate('Login')}>
+                  <Text style={styles.loginTxt}>Login</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ScrollView>
+        </View>
+      </>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  register: state.register,
+  register: state.auth,
 });
 const mapDispatchToProps = {
   registerAction,
@@ -118,6 +110,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
 const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
+    marginTop: 30,
   },
   text: {
     marginTop: 25,

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, Alert} from 'react-native';
+import {StyleSheet, View, Text, Alert, StatusBar} from 'react-native';
 import * as yup from 'yup';
 import {Formik} from 'formik';
 import {connect} from 'react-redux';
@@ -44,6 +44,7 @@ class Login extends Component {
   render() {
     return (
       <View style={styles.parent}>
+        <StatusBar color="#A00000" />
         <View>
           <Header transparent>
             <Left>
