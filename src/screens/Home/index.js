@@ -1,27 +1,12 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Image,
-  View,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
-import {
-  Card,
-  CardItem,
-  Header,
-  Body,
-  Right,
-  Button,
-  Title,
-  Text,
-  Left,
-} from 'native-base';
+import {StyleSheet, View, FlatList, ActivityIndicator} from 'react-native';
+import {Header, Body, Right, Button, Title} from 'native-base';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {API_URL} from '@env';
 
 import {getNews} from '../../redux/actions/news';
+import CardNews from '../../components/CardNews';
 
 class Home extends React.Component {
   componentDidMount() {
@@ -34,7 +19,7 @@ class Home extends React.Component {
   };
 
   render() {
-    const {isLoading, data, isError, message} = this.props.news;
+    const {isLoading, data} = this.props.news;
     return (
       <>
         <Header style={styles.header} transparent>
@@ -49,37 +34,29 @@ class Home extends React.Component {
             </Button>
           </Right>
         </Header>
-        <View style={styles.parent}>
-          <ScrollView>
-            {!isLoading &&
-              !isError &&
-              data.length !== 0 &&
-              data.map((item) => {
-                return (
-                  <TouchableOpacity key="uniqueId1" onPress={this.showDetail}>
-                    <Card>
-                      <CardItem>
-                        <Body>
-                          <Image
-                            style={styles.cardImage}
-                            source={{uri: `${API_URL}${item.picture}`}}
-                          />
-                          <Text style={styles.headline}>{item.headline}</Text>
-                          <View style={styles.about}>
-                            <Text>{item.author.name}</Text>
-                            <Left />
-                            <Text note>{item.createdAt}</Text>
-                          </View>
-                        </Body>
-                      </CardItem>
-                    </Card>
-                  </TouchableOpacity>
-                );
-              })}
-          </ScrollView>
-          {isLoading && !isError && <Text>Loading</Text>}
-          {isError && message !== '' && <Text>{message}</Text>}
-        </View>
+        {isLoading === true ? (
+          <ActivityIndicator
+            size="large"
+            color="#A00000"
+            animating={isLoading}
+            style={styles.indicator}
+          />
+        ) : (
+          <View style={styles.parent}>
+            <FlatList
+              data={data}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({item, index}) => (
+                <CardNews
+                  headline={item.headline}
+                  author={item.author.name}
+                  createdAt={item.createdAt}
+                  image={`${API_URL}${item.picture}`}
+                />
+              )}
+            />
+          </View>
+        )}
       </>
     );
   }
@@ -107,16 +84,9 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     marginBottom: 95,
   },
-  cardImage: {
-    width: 300,
-    height: 175,
-    backgroundColor: '#E8E8E8',
-  },
-  headline: {
-    fontSize: 25,
-    fontWeight: 'bold',
-  },
-  about: {
-    flexDirection: 'row',
+  indicator: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
