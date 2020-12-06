@@ -19,7 +19,7 @@ import {
   Title,
 } from 'native-base';
 import {useDispatch, useSelector} from 'react-redux';
-import ImagePicker from 'react-native-image-crop-picker';
+import ImagePicker from 'react-native-image-picker';
 
 import {getProfile} from '../../redux/actions/profile';
 
@@ -31,18 +31,33 @@ const EditProfile = () => {
     dispatch(getProfile(token));
   }, [dispatch, token]);
 
-  const [Photo, setPhoto] = useState('');
+  const [avatarSource, setAvatarSource] = useState('');
 
-  const choosePhotoGalery = () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 300,
-      cropping: true,
-    }).then((photo) => {
-      setPhoto(Photo.path);
-      console.log(Photo);
-    });
+  const options = {
+    title: 'Select Avatar',
+    customButtons: [{name: 'fb', title: 'Choose Photo from Facebook'}],
+    storageOptions: {
+      skipBackup: true,
+      path: 'images',
+    },
   };
+
+  ImagePicker.showImagePicker(options, (response) => {
+    console.log('Response = ', response);
+
+    if (response.didCancel) {
+      console.log('User cancelled image picker');
+    } else if (response.error) {
+      console.log('ImagePicker Error: ', response.error);
+    } else if (response.customButton) {
+      console.log('User tapped custom button: ', response.customButton);
+    } else {
+      const source = {uri: response.uri};
+      setAvatarSource({
+        avatarSource: source,
+      });
+    }
+  });
 
   return (
     <>
@@ -64,8 +79,8 @@ const EditProfile = () => {
             <View style={styles.component}>
               <View>
                 <View style={styles.userBio}>
-                  <Image style={styles.image} source={{uri: Photo}} />
-                  <TouchableOpacity onPress={choosePhotoGalery}>
+                  <Image style={styles.image} source={{uri: avatarSource}} />
+                  <TouchableOpacity>
                     <Text style={styles.pick}>Choose Image</Text>
                   </TouchableOpacity>
                 </View>

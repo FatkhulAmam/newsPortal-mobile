@@ -64,7 +64,6 @@ class SignUp extends Component {
                 handleSubmit,
                 values,
                 errors,
-                isValid,
                 touched,
               }) => (
                 <View style={styles.register}>
@@ -112,7 +111,7 @@ class SignUp extends Component {
                     ) : (
                       <ActivityIndicator
                         color="#ffffff"
-                        animating={this.props.register.isLoading}
+                        animating={this.props.register.isLoadingRegister}
                         style={styles.indicator}
                       />
                     )}

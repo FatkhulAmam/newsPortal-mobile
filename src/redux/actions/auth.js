@@ -3,7 +3,7 @@ import qs from 'qs';
 
 const loginAction = (data) => ({
   type: 'AUTH_USER',
-  payload: http().post('auth/login', qs.stringify({data})),
+  payload: http().post('auth/login', qs.stringify(data)),
 });
 
 const registerAction = (data) => ({

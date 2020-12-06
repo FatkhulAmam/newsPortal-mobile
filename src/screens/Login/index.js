@@ -1,117 +1,126 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, Alert, StatusBar} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Alert,
+  StatusBar,
+  ActivityIndicator,
+} from 'react-native';
 import * as yup from 'yup';
 import {Formik} from 'formik';
 import {connect} from 'react-redux';
-import {
-  Button,
-  Header,
-  Left,
-  Right,
-  Label,
-  Form,
-  Item,
-  Input,
-} from 'native-base';
+import {Button, Header, Right, Label, Form, Item, Input} from 'native-base';
 import LogoMaos from '../../assets/images/maos.svg';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {loginAction} from '../../redux/actions/auth';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const loginValidationSchema = yup.object().shape({
-  name: yup.string().required('Fullname is required'),
+const schemaValidation = yup.object().shape({
   email: yup
     .string()
-    .email('Must have @ and .com')
-    .required('Email address is required'),
+    .email('Masukkan alamat email dengan benar')
+    .required('Email dibutuhkan'),
   password: yup
     .string()
-    .min(8, ({min}) => `Password min ${min} character`)
-    .required('Password required'),
+    .min(8, 'Password setidaknya terdiri dari 8 karakter')
+    .required('Password dibutuhkan'),
 });
 
 class Login extends Component {
   dologin = (data) => {
     this.props.loginAction(data);
+    const {message, isError} = this.props.auth;
+    if (isError) {
+      Alert.alert(message);
+    } else {
+      Alert.alert(message);
+    }
   };
 
   render() {
     return (
-      <View style={styles.parent}>
-        <StatusBar color="#A00000" />
-        <View>
-          <Header transparent>
-            <Left>
+      <>
+        <View style={styles.parent}>
+          <StatusBar backgroundColor={'#A00000'} />
+          <View>
+            <Header transparent>
               <Button transparent>
                 <Icon name="angle-left" size={30} />
               </Button>
-            </Left>
-            <Right />
-          </Header>
+              <Right />
+            </Header>
+          </View>
+          <View style={styles.header}>
+            <LogoMaos />
+            <Text style={styles.text}>LOGIN</Text>
+            <Text>Have an maos account</Text>
+          </View>
+          <Formik
+            initialValues={{
+              email: '',
+              password: '',
+            }}
+            validationSchema={schemaValidation}
+            onSubmit={(values) => this.dologin(values)}>
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              touched,
+              errors,
+            }) => (
+              <View style={styles.register}>
+                <Form>
+                  <Item floatingLabel>
+                    <Label>Email</Label>
+                    <Input
+                      onChangeText={handleChange('email')}
+                      onBlur={handleBlur('email')}
+                      value={values.email}
+                      keyboardType="email-address"
+                    />
+                  </Item>
+                  {touched.email && errors.email && (
+                    <Text style={styles.textError}>{errors.email}</Text>
+                  )}
+                  <Item floatingLabel>
+                    <Label>Password</Label>
+                    <Input
+                      secureTextEntry
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      value={values.password}
+                    />
+                  </Item>
+                  {touched.password && errors.password && (
+                    <Text style={styles.textError}>{errors.password}</Text>
+                  )}
+                </Form>
+                <TouchableOpacity
+                  style={styles.touchForgot}
+                  onPress={() =>
+                    this.props.navigation.navigate('ForgotPassword')
+                  }>
+                  <Text style={styles.forgot}>Forgot My Password</Text>
+                </TouchableOpacity>
+                <Button style={styles.btnLogin} onPress={handleSubmit} block>
+                  {this.props.auth.isLoadingLogin === false ? (
+                    <Text style={styles.btntext}>LOGIN</Text>
+                  ) : (
+                    <ActivityIndicator
+                      color="#ffffff"
+                      animating={this.props.auth.isLoadingLogin}
+                      style={styles.indicator}
+                    />
+                  )}
+                </Button>
+              </View>
+            )}
+          </Formik>
         </View>
-        <View style={styles.header}>
-          <LogoMaos />
-          <Text style={styles.text}>LOGIN</Text>
-          <Text>Have an maos account</Text>
-        </View>
-        <Formik
-          validationSchema={loginValidationSchema}
-          initialValues={{
-            email: '',
-            password: '',
-          }}
-          onSubmit={(values) => this.dologin(values)}>
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            errors,
-            isValid,
-            touched,
-          }) => (
-            <View style={styles.register}>
-              <Form>
-                <Item floatingLabel>
-                  <Label>Email</Label>
-                  <Input
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    value={values.email}
-                    keyboardType="email-address"
-                  />
-                </Item>
-                {touched.email && errors.email && (
-                  <Text style={styles.textError}>{errors.email}</Text>
-                )}
-                <Item floatingLabel last>
-                  <Label>Password</Label>
-                  <Input
-                    secureTextEntry
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
-                  />
-                </Item>
-                {touched.password && errors.password && (
-                  <Text style={styles.textError}>{errors.password}</Text>
-                )}
-              </Form>
-              <Button
-                block
-                transparent
-                onPress={() =>
-                  this.props.navigation.navigate('ForgotPassword')
-                }>
-                <Right />
-                <Text style={styles.forgot}>Forgot My Password</Text>
-              </Button>
-              <Button style={styles.btnLogin} block onPress={handleSubmit}>
-                <Text style={styles.btntext}>LOGIN</Text>
-              </Button>
-            </View>
-          )}
-        </Formik>
-      </View>
+      </>
     );
   }
 }
@@ -149,6 +158,10 @@ const styles = StyleSheet.create({
     marginRight: 15,
     marginTop: 10,
   },
+  touchForgot: {
+    width: '100%',
+    right: 0,
+  },
   btnLogin: {
     borderRadius: 25,
     marginTop: 20,
@@ -160,6 +173,7 @@ const styles = StyleSheet.create({
   forgot: {
     marginTop: 15,
     color: '#A00000',
+    left: 200,
   },
   textError: {
     fontSize: 10,

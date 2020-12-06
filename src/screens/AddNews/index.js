@@ -21,7 +21,7 @@ import {
   Input,
 } from 'native-base';
 import {connect} from 'react-redux';
-import ImagePicker from 'react-native-image-crop-picker';
+import ImagePicker from 'react-native-image-picker';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -53,17 +53,6 @@ class AddNews extends Component {
       this.setState({message});
       Alert.alert(message);
     }
-  };
-
-  addNewsPicture = () => {
-    ImagePicker.openPicker({
-      width: 500,
-      height: 450,
-      cropping: true,
-    }).then((pictures) => {
-      this.setState({pictures: pictures.path});
-      console.log(pictures.path);
-    });
   };
 
   componentDidMount() {

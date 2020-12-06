@@ -60,7 +60,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isError: false,
-        isLogin: true,
         isLoadingRegister: false,
         message: 'register success',
       };

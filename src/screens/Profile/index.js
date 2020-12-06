@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
-import {Header, Left, Text, Right, Button, Card} from 'native-base';
+import {Header, Text, Right, Button, Card} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useSelector, useDispatch} from 'react-redux';
 import {API_URL} from '@env';
