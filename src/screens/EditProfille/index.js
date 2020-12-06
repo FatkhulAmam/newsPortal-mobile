@@ -23,6 +23,14 @@ import ImagePicker from 'react-native-image-picker';
 
 import {getProfile} from '../../redux/actions/profile';
 
+const options = {
+  title: 'Select Avatar',
+  storageOptions: {
+    skipBackup: true,
+    path: 'images',
+  },
+};
+
 const EditProfile = () => {
   const user = useSelector((state) => state.profile);
   const token = useSelector((state) => state.auth.token);
@@ -33,31 +41,24 @@ const EditProfile = () => {
 
   const [avatarSource, setAvatarSource] = useState('');
 
-  const options = {
-    title: 'Select Avatar',
-    customButtons: [{name: 'fb', title: 'Choose Photo from Facebook'}],
-    storageOptions: {
-      skipBackup: true,
-      path: 'images',
-    },
+  const takePicture = () => {
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        const source = {uri: response.uri};
+        setAvatarSource({
+          avatarSource: source,
+        });
+      }
+    });
   };
-
-  ImagePicker.showImagePicker(options, (response) => {
-    console.log('Response = ', response);
-
-    if (response.didCancel) {
-      console.log('User cancelled image picker');
-    } else if (response.error) {
-      console.log('ImagePicker Error: ', response.error);
-    } else if (response.customButton) {
-      console.log('User tapped custom button: ', response.customButton);
-    } else {
-      const source = {uri: response.uri};
-      setAvatarSource({
-        avatarSource: source,
-      });
-    }
-  });
 
   return (
     <>
@@ -80,7 +81,7 @@ const EditProfile = () => {
               <View>
                 <View style={styles.userBio}>
                   <Image style={styles.image} source={{uri: avatarSource}} />
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={takePicture}>
                     <Text style={styles.pick}>Choose Image</Text>
                   </TouchableOpacity>
                 </View>
