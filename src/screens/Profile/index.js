@@ -6,7 +6,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {API_URL} from '@env';
 
 import {getProfile} from '../../redux/actions/profile';
-import avatar from '../../assets/images/profile.png';
+import avatar from '../../assets/images/avatar.png';
 
 const Profile = ({navigation}) => {
   const user = useSelector((state) => state.profile);

@@ -22,7 +22,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 
 import {getProfile} from '../../redux/actions/profile';
-import avatar from '../../assets/images/profile.png';
+import avatar from '../../assets/images/avatar.png';
 
 const options = {
   title: 'Select Avatar',
@@ -40,7 +40,7 @@ const EditProfile = () => {
     dispatch(getProfile(token));
   }, [dispatch, token]);
 
-  const [avatarSource, setAvatarSource] = useState(avatar);
+  const [avatarSource, setAvatarSource] = useState('');
 
   const takePicture = () => {
     ImagePicker.showImagePicker(options, (response) => {
@@ -81,7 +81,10 @@ const EditProfile = () => {
             <View style={styles.component}>
               <View>
                 <View style={styles.userBio}>
-                  <Image style={styles.image} source={{uri: avatarSource}} />
+                  <Image
+                    style={styles.image}
+                    source={avatarSource !== '' ? {uri: avatarSource} : avatar}
+                  />
                   <TouchableOpacity onPress={takePicture}>
                     <Text style={styles.pick}>Choose Image</Text>
                   </TouchableOpacity>
