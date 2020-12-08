@@ -6,6 +6,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {API_URL} from '@env';
 
 import {getProfile} from '../../redux/actions/profile';
+import avatar from '../../assets/images/profile.png';
 
 const Profile = ({navigation}) => {
   const user = useSelector((state) => state.profile);
@@ -28,7 +29,9 @@ const Profile = ({navigation}) => {
         <Card style={styles.bioCard} transparent>
           <Image
             style={styles.image}
-            source={{uri: `${API_URL}${user.data.photo}`}}
+            source={
+              user.data.photo ? {uri: `${API_URL}${user.data.photo}`} : avatar
+            }
           />
           <View style={styles.menu}>
             <TouchableOpacity

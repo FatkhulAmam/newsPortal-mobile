@@ -22,6 +22,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 
 import {getProfile} from '../../redux/actions/profile';
+import avatar from '../../assets/images/profile.png';
 
 const options = {
   title: 'Select Avatar',
@@ -39,7 +40,7 @@ const EditProfile = () => {
     dispatch(getProfile(token));
   }, [dispatch, token]);
 
-  const [avatarSource, setAvatarSource] = useState('');
+  const [avatarSource, setAvatarSource] = useState(avatar);
 
   const takePicture = () => {
     ImagePicker.showImagePicker(options, (response) => {
