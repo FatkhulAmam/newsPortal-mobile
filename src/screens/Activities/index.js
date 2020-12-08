@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, StatusBar} from 'react-native';
 import {Header, Body, Right, Button, Title} from 'native-base';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -8,6 +8,7 @@ const Favorites = ({navigation}) => {
   return (
     <View>
       <Header style={styles.header} transparent>
+        <StatusBar backgroundColor={'#A00000'} />
         <Body>
           <Title style={styles.text}>Activities Page</Title>
         </Body>

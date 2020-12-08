@@ -91,9 +91,9 @@ class AddNews extends Component {
   render() {
     return (
       <SafeAreaView>
-        <StatusBar backgroundColor={'#A00000'} />
         <View>
           <Header style={styles.header} transparent>
+            <StatusBar backgroundColor={'#A00000'} />
             <Button transparent onPress={() => this.props.navigation.goBack()}>
               <Icon name="times" size={22} />
             </Button>

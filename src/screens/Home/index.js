@@ -1,5 +1,11 @@
 import React from 'react';
-import {StyleSheet, View, FlatList, ActivityIndicator} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  ActivityIndicator,
+  StatusBar,
+} from 'react-native';
 import {Header, Body, Right, Button, Title} from 'native-base';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -23,6 +29,7 @@ class Home extends React.Component {
     return (
       <>
         <Header style={styles.header} transparent>
+          <StatusBar backgroundColor={'#A00000'} />
           <Body>
             <Title style={styles.text}>Maos News</Title>
           </Body>

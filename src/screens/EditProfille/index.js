@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  StatusBar,
 } from 'react-native';
 import {
   Header,
@@ -65,6 +66,7 @@ const EditProfile = () => {
     <>
       <View style={styles.parent}>
         <Header transparent>
+          <StatusBar backgroundColor={'#A00000'} />
           <Body>
             <Title style={styles.text}>Edit profile</Title>
           </Body>

@@ -1,5 +1,11 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+  StatusBar,
+} from 'react-native';
 import {Header, Text, Right, Button, Card} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useSelector, useDispatch} from 'react-redux';
@@ -20,6 +26,7 @@ const Profile = ({navigation}) => {
     <>
       <View style={styles.parent}>
         <Header style={styles.header} transparent>
+          <StatusBar backgroundColor={'#A00000'} />
           <Right>
             <Button transparent onPress={() => navigation.navigate('Search')}>
               <Icon name="search" size={22} />
