@@ -112,7 +112,7 @@ class AddNews extends Component {
               judul: '',
               description: '',
             }}
-            onSubmit={(values) => this.signUp(values)}>
+            onSubmit={(values) => console.log(values)}>
             {({
               handleChange,
               handleBlur,

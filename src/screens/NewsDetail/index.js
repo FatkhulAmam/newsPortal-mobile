@@ -11,7 +11,7 @@ import DefaultImage from '../../assets/images/default.png';
 
 const Detail = ({route}) => {
   const token = useSelector((state) => state.auth.token);
-  const detailNews = useSelector((state) => state.news.data[0]);
+  const detailNews = useSelector((state) => state.news.detailNews);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,11 +34,18 @@ const Detail = ({route}) => {
       </Header>
       <View style={styles.parent}>
         <ScrollView>
-          <Image style={styles.image} source={DefaultImage} />
+          <Image
+            style={styles.image}
+            source={
+              detailNews.picture
+                ? {uri: `${API_URL}${detailNews.picture}`}
+                : DefaultImage
+            }
+          />
           <View style={styles.titleContain}>
             <Text style={styles.title}>{detailNews.headline}</Text>
             <View style={styles.about}>
-              <Text>{detailNews.author.name}</Text>
+              <Text>{detailNews.author_id}</Text>
               <Left />
               <Text note>
                 {moment(detailNews.createdAt).format('MMMM Do YYYY')}

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Image, View, TouchableOpacity} from 'react-native';
 import {Card, CardItem, Body, Text, Left} from 'native-base';
+import DefaultImage from '../assets/images/default.png';
 
 export default class CardImage extends Component {
   render() {
@@ -11,7 +12,11 @@ export default class CardImage extends Component {
             <Body>
               <Image
                 style={styles.cardImage}
-                source={{uri: this.props.image}}
+                source={
+                  this.props.image !== ''
+                    ? {uri: this.props.image}
+                    : DefaultImage
+                }
               />
               <Text style={styles.headline}>{this.props.headline}</Text>
               <View style={styles.about}>

@@ -74,7 +74,7 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: false,
-        detailNews: action.payload.data.result,
+        detailNews: action.payload.data.results,
       };
     }
     default: {
