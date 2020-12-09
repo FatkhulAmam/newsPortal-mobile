@@ -40,6 +40,8 @@ const Profile = ({navigation}) => {
               user.data.photo ? {uri: `${API_URL}${user.data.photo}`} : avatar
             }
           />
+          <Text style={styles.name}>{user.data.name}</Text>
+          <Text>{user.data.email}</Text>
           <View style={styles.menu}>
             <TouchableOpacity
               onPress={() => navigation.navigate('EditProfile')}>
