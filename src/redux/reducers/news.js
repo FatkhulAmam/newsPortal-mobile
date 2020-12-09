@@ -3,6 +3,7 @@ const initialState = {
   detailNews: [],
   isLoading: false,
   isError: false,
+  isMaked: false,
   message: '',
 };
 
@@ -49,7 +50,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isError: false,
-        isLogin: true,
+        isMaked: true,
         isLoading: false,
         message: 'make news success',
       };

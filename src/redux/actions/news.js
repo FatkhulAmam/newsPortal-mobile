@@ -6,9 +6,9 @@ const getNews = (token, data) => ({
   payload: http(token).get('news/?sort[createdAt]=desc', qs.stringify(data)),
 });
 
-const makeNewsAction = (data, token) => ({
+const makeNewsAction = (token, form) => ({
   type: 'MAKE_NEWS',
-  payload: http(token).post('news', qs.stringify(data)),
+  payload: http(token).post('news', form),
 });
 
 const getDetail = (token, id) => ({

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 import {
   Text,
@@ -21,18 +22,18 @@ import {
   Title,
   Input,
 } from 'native-base';
-import {connect} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {getCategory} from '../../redux/actions/category';
 import {makeNewsAction} from '../../redux/actions/news';
 
 const FormValidation = yup.object().shape({
   judul: yup.string().required('Judul diperlukan'),
+  category: yup.number().required('Masukkan category berita'),
   description: yup.string().required('Masukkan isi berita'),
 });
 
@@ -40,33 +41,30 @@ const options = {
   title: 'Select Picture',
 };
 
-class AddNews extends Component {
-  state = {
-    category: '',
-    pictures: '',
-    message: '',
-  };
+const AddNews = ({navigation}) => {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
+  const newsIndex = useSelector((state) => state.news);
+  const [NewsImage, setNewsImage] = useState('');
+  const [dataImage, setDataImage] = React.useState('');
 
-  makeNews = () => {
-    const {headline, category, description} = this.state;
-    const data = {
-      headline: headline,
-      category: category,
-      description: description,
-    };
-    this.props.makeNewsAction(data, this.props.auth.token);
-  };
-
-  showAlert = () => {
-    const {message} = this.props.addNews;
-    if (message !== this.state.message) {
-      this.setState({message});
-      Alert.alert(message);
+  const makeHotNews = async (data, img) => {
+    const form = new FormData();
+    form.append('headline', data.judul);
+    form.append('category', data.category);
+    form.append('description', data.description);
+    form.append('pictures', img);
+    await dispatch(makeNewsAction(token, form));
+    if (newsIndex.isMaked === false) {
+      Alert.alert(newsIndex.message);
+    } else {
+      Alert.alert(newsIndex.message);
+      navigation.navigate('MainApp');
     }
   };
 
-  pickImage = () => {
-    ImagePicker.launchImageLibrary(options, (response) => {
+  const pickImage = () => {
+    ImagePicker.launchImageLibrary(options, async (response) => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
@@ -74,120 +72,125 @@ class AddNews extends Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        const source = {uri: response.uri};
-        this.setState({
-          pictures: source,
+        setNewsImage({uri: response.uri});
+        await setDataImage({
+          uri: response.uri,
+          name: response.fileName,
+          type: response.type,
         });
       }
     });
   };
 
-  componentDidMount() {
-    this.props.getCategory();
-  }
-
-  render() {
-    return (
-      <SafeAreaView>
-        <View>
-          <Header style={styles.header} transparent>
-            <StatusBar backgroundColor={'#A00000'} />
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name="times" size={22} />
-            </Button>
-            <Body>
-              <Title style={styles.text}>Hottes news</Title>
-            </Body>
-            <Right>
-              <Button transparent onPress={this.makeNews}>
-                <Text style={styles.pushtxt}>publish</Text>
-              </Button>
-            </Right>
-          </Header>
-        </View>
-        <ScrollView>
-          <Formik
-            validationSchema={FormValidation}
-            initialValues={{
-              judul: '',
-              description: '',
-            }}
-            onSubmit={(values) => console.log(values)}>
-            {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-              errors,
-              touched,
-            }) => (
-              <View style={styles.parent}>
-                <Form>
-                  <Label style={styles.label}>Upload Gambar</Label>
-                  <TouchableOpacity onPress={this.pickImage}>
-                    <View style={styles.InputImage}>
-                      <Icon name="cloud-upload" size={50} color="#8e8e8e" />
-                      <Text note>upload file dari penyimpanan</Text>
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={this.pickImage}>
-                    <Image
-                      style={styles.portofolioImg}
-                      source={{uri: this.props.pictures}}
-                    />
-                  </TouchableOpacity>
-                  <Input
-                    name="judul"
-                    placeholder="Masukkan judul"
-                    style={styles.inputText}
-                    onChangeText={handleChange('judul')}
-                    onBlur={handleBlur('judul')}
-                    value={values.judul}
-                  />
-                  {touched.judul && errors.judul && (
-                    <Text style={styles.textError}>{errors.judul}</Text>
-                  )}
-                  <Input
-                    style={styles.inputText}
-                    placeholder="Masukkan category"
-                    onChangeText={(category) => this.setState({category})}
-                  />
-                  <Textarea
-                    bordered
-                    style={styles.descriptionArea}
-                    placeholder="description"
-                    name="description"
-                    onChangeText={handleChange('description')}
-                    onBlur={handleBlur('description')}
-                    value={values.description}
-                  />
-                  {touched.description && errors.description && (
-                    <Text style={styles.textError}>{errors.description}</Text>
-                  )}
-                  <Button style={styles.publish} onPress={handleSubmit} block>
-                    <Text style={styles.btntext}>PUBLISH</Text>
+  return (
+    <>
+      {newsIndex.isLoading === false ? (
+        <Formik
+          validationSchema={FormValidation}
+          initialValues={{
+            judul: '',
+            category: '',
+            description: '',
+          }}
+          onSubmit={(values) => makeHotNews(values, dataImage)}>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+            isValid,
+          }) => (
+            <SafeAreaView>
+              <View>
+                <Header style={styles.header} transparent>
+                  <StatusBar backgroundColor={'#A00000'} />
+                  <Button transparent onPress={() => navigation.goBack()}>
+                    <Icon name="times" size={22} />
                   </Button>
-                </Form>
+                  <Body>
+                    <Title style={styles.text}>Hottes news</Title>
+                  </Body>
+                  <Right>
+                    <Button
+                      transparent
+                      onPress={handleSubmit}
+                      disabled={!isValid}>
+                      <Text style={styles.pushtxt}>publish</Text>
+                    </Button>
+                  </Right>
+                </Header>
               </View>
-            )}
-          </Formik>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-}
-
-const mapStateToProps = (state) => ({
-  category: state.category,
-  addNews: state.addNews,
-  auth: state.auth,
-});
-const mapDispatchToProps = {
-  getCategory,
-  makeNewsAction,
+              <ScrollView>
+                <View style={styles.parent}>
+                  <Form>
+                    <Label style={styles.label}>Upload Gambar</Label>
+                    {NewsImage === '' ? (
+                      <TouchableOpacity onPress={pickImage}>
+                        <View style={styles.InputImage}>
+                          <Icon name="cloud-upload" size={50} color="#8e8e8e" />
+                          <Text note>upload file dari penyimpanan</Text>
+                        </View>
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity onPress={pickImage}>
+                        <Image style={styles.newsImage} source={NewsImage} />
+                      </TouchableOpacity>
+                    )}
+                    <Input
+                      name="judul"
+                      placeholder="Masukkan judul"
+                      style={styles.inputText}
+                      onChangeText={handleChange('judul')}
+                      onBlur={handleBlur('judul')}
+                      value={values.judul}
+                    />
+                    {touched.judul && errors.judul && (
+                      <Text style={styles.textError}>{errors.judul}</Text>
+                    )}
+                    <Input
+                      name="category"
+                      placeholder="Masukkan category"
+                      style={styles.inputText}
+                      onChangeText={handleChange('category')}
+                      onBlur={handleBlur('category')}
+                      value={values.category}
+                    />
+                    {touched.category && errors.category && (
+                      <Text style={styles.textError}>{errors.category}</Text>
+                    )}
+                    <Textarea
+                      bordered
+                      style={styles.descriptionArea}
+                      placeholder="description"
+                      name="description"
+                      onChangeText={handleChange('description')}
+                      onBlur={handleBlur('description')}
+                      value={values.description}
+                    />
+                    {touched.description && errors.description && (
+                      <Text style={styles.textError}>{errors.description}</Text>
+                    )}
+                  </Form>
+                </View>
+              </ScrollView>
+            </SafeAreaView>
+          )}
+        </Formik>
+      ) : (
+        <ActivityIndicator
+          size="large"
+          color="#A00000"
+          animating={newsIndex.isLoading}
+          style={styles.parentsLoading}
+        />
+      )}
+    </>
+  );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddNews);
+export default AddNews;
 
 const styles = StyleSheet.create({
   text: {
@@ -210,6 +213,10 @@ const styles = StyleSheet.create({
     position: 'relative',
     height: 200,
   },
+  newsImage: {
+    height: 200,
+    width: '100%',
+  },
   pushtxt: {
     color: '#A10000',
   },
@@ -231,7 +238,6 @@ const styles = StyleSheet.create({
   textError: {
     fontSize: 10,
     color: '#FF0D10',
-    marginLeft: 15,
     fontStyle: 'italic',
   },
   inputText: {
@@ -245,6 +251,11 @@ const styles = StyleSheet.create({
   },
   descriptionArea: {
     width: '100%',
-    height: 125,
+    height: 200,
+  },
+  parentsLoading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
