@@ -1,104 +1,63 @@
-import React from 'react';
-import {
-  StyleSheet,
-  Image,
-  View,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
-import {
-  Card,
-  CardItem,
-  Header,
-  Body,
-  Right,
-  Button,
-  Title,
-  Text,
-  Left,
-} from 'native-base';
-import {connect} from 'react-redux';
+import React, {useEffect} from 'react';
+import {StyleSheet, FlatList, View, StatusBar} from 'react-native';
+import {Header, Body, Right, Button, Title, Text} from 'native-base';
+import {useSelector, useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {API_URL} from '@env';
+import moment from 'moment';
 
-import {getNews} from '../../redux/actions/news';
+import {getNewsMyNews} from '../../redux/actions/news';
+import CardNews from '../../components/CardMyNews';
 
-class Home extends React.Component {
-  componentDidMount() {
-    this.props.getNews(this.props.auth.token);
-  }
+const Mynews = () => {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
+  const dataMyNews = useSelector((state) => state.news.myNews);
 
-  showDetail = () => {
-    this.props.navigation.navigate('NewsDetail');
-    console.log(this.props.news.data[0].id);
-  };
+  useEffect(() => {
+    dispatch(getNewsMyNews(token));
+  }, [dispatch, token]);
 
-  render() {
-    const {isLoading, data, isError, message} = this.props.news;
-    return (
-      <>
-        <Header style={styles.header} transparent>
-          <Body>
-            <Title style={styles.text}>My News</Title>
-          </Body>
-          <Right>
-            <Button
-              transparent
-              onPress={() => this.props.navigation.navigate('Search')}>
-              <Icon name="search" size={20} />
-            </Button>
-          </Right>
-        </Header>
-        <View style={styles.parent}>
-          <ScrollView>
-            {!isLoading &&
-              !isError &&
-              data.length !== 0 &&
-              data.map((item) => {
-                return (
-                  <TouchableOpacity onPress={this.showDetail}>
-                    <Card>
-                      <CardItem>
-                        <Body>
-                          <Image
-                            style={styles.cardImage}
-                            source={`${API_URL}${item.picture}`}
-                          />
-                          <Text style={styles.headline}>{item.headline}</Text>
-                          <View style={styles.about}>
-                            <Text note>{item.createdAt}</Text>
-                            <Left />
-                            <TouchableOpacity
-                              onPress={() =>
-                                this.props.navigation.navigate('AddNews')
-                              }>
-                              <Text style={styles.editTxt}>Edit</Text>
-                            </TouchableOpacity>
-                          </View>
-                        </Body>
-                      </CardItem>
-                    </Card>
-                  </TouchableOpacity>
-                );
-              })}
-          </ScrollView>
-          {isLoading && !isError && <Text>Loading</Text>}
-          {isError && message !== '' && <Text>{message}</Text>}
+  return (
+    <>
+      <Header style={styles.header} transparent>
+        <StatusBar backgroundColor={'#A00000'} />
+        <Body>
+          <Title style={styles.text}>My News</Title>
+        </Body>
+        <Right>
+          <Button
+            transparent
+            onPress={() => this.props.navigation.navigate('Search')}>
+            <Icon name="search" size={20} />
+          </Button>
+        </Right>
+      </Header>
+      <View style={styles.parent}>
+        <View style={styles.tagEdit}>
+          <Text>Tap to edit</Text>
         </View>
-      </>
-    );
-  }
-}
-
-const mapStateToProps = (state) => ({
-  news: state.news,
-  auth: state.auth,
-});
-const mapDispatchToProps = {
-  getNews,
+        <FlatList
+          data={dataMyNews}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item, index}) => (
+            <CardNews
+              headline={item.headline}
+              author={item.author.name}
+              createdAt={moment(item.createdAt).format('MMMM Do YYYY')}
+              image={`${API_URL}${item.picture}`}
+              moveDetail={() =>
+                this.props.navigation.navigate('NewsDetail', item.id)
+              }
+            />
+          )}
+        />
+      </View>
+    </>
+  );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default Mynews;
 
 const styles = StyleSheet.create({
   header: {
@@ -108,9 +67,11 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   parent: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    marginBottom: 95,
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
+  tagEdit: {
+    alignItems: 'center',
   },
   cardImage: {
     width: 300,

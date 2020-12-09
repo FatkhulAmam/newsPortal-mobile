@@ -1,5 +1,6 @@
 const initialState = {
   data: [],
+  myNews: [],
   detailNews: [],
   isLoading: false,
   isError: false,
@@ -29,6 +30,29 @@ export default (state = initialState, action) => {
         isLoading: false,
         isError: false,
         data: action.payload.data.result,
+      };
+    }
+    // get my news
+    case 'MY_NEWS_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'MY_NEWS_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: 'There is an error at request data',
+      };
+    }
+    case 'MY_NEWS_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        myNews: action.payload.data.results,
       };
     }
     //make news
