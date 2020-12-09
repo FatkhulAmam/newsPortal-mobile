@@ -13,7 +13,6 @@ import {
   Text,
   Header,
   Form,
-  Item,
   Label,
   Textarea,
   Body,
@@ -28,7 +27,6 @@ import {Formik} from 'formik';
 import * as yup from 'yup';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-import ImageDeafult from '../../assets/images/default.png';
 
 import {getCategory} from '../../redux/actions/category';
 import {makeNewsAction} from '../../redux/actions/news';
@@ -45,7 +43,7 @@ const options = {
 class AddNews extends Component {
   state = {
     category: '',
-    pictures: ImageDeafult,
+    pictures: '',
     message: '',
   };
 
@@ -108,54 +106,55 @@ class AddNews extends Component {
           </Header>
         </View>
         <ScrollView>
-          <View style={styles.parent}>
-            <Formik
-              validationSchema={FormValidation}
-              initialValues={{
-                judul: '',
-                description: '',
-              }}
-              onSubmit={(values) => this.signUp(values)}>
-              {({
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                values,
-                errors,
-                touched,
-              }) => (
+          <Formik
+            validationSchema={FormValidation}
+            initialValues={{
+              judul: '',
+              description: '',
+            }}
+            onSubmit={(values) => this.signUp(values)}>
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+            }) => (
+              <View style={styles.parent}>
                 <Form>
-                  <View style={styles.imageContent}>
+                  <Label style={styles.label}>Upload Gambar</Label>
+                  <TouchableOpacity onPress={this.pickImage}>
+                    <View style={styles.InputImage}>
+                      <Icon name="cloud-upload" size={50} color="#8e8e8e" />
+                      <Text note>upload file dari penyimpanan</Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={this.pickImage}>
                     <Image
-                      style={styles.image}
+                      style={styles.portofolioImg}
                       source={{uri: this.props.pictures}}
                     />
-                    <TouchableOpacity onPress={this.pickImage}>
-                      <Text style={styles.add}>add image</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <Item floatingLabel>
-                    <Label>Headline</Label>
-                    <Input
-                      name="judul"
-                      onChangeText={handleChange('judul')}
-                      onBlur={handleBlur('judul')}
-                      value={values.judul}
-                    />
-                  </Item>
+                  </TouchableOpacity>
+                  <Input
+                    name="judul"
+                    placeholder="Masukkan judul"
+                    style={styles.inputText}
+                    onChangeText={handleChange('judul')}
+                    onBlur={handleBlur('judul')}
+                    value={values.judul}
+                  />
                   {touched.judul && errors.judul && (
                     <Text style={styles.textError}>{errors.judul}</Text>
                   )}
-                  <Item floatingLabel>
-                    <Label>Category</Label>
-                    <Input
-                      onChangeText={(category) => this.setState({category})}
-                    />
-                  </Item>
-                  <Label>Headline</Label>
+                  <Input
+                    style={styles.inputText}
+                    placeholder="Masukkan category"
+                    onChangeText={(category) => this.setState({category})}
+                  />
                   <Textarea
-                    style={styles.description}
                     bordered
+                    style={styles.descriptionArea}
                     placeholder="description"
                     name="description"
                     onChangeText={handleChange('description')}
@@ -169,9 +168,9 @@ class AddNews extends Component {
                     <Text style={styles.btntext}>PUBLISH</Text>
                   </Button>
                 </Form>
-              )}
-            </Formik>
-          </View>
+              </View>
+            )}
+          </Formik>
         </ScrollView>
       </SafeAreaView>
     );
@@ -198,6 +197,19 @@ const styles = StyleSheet.create({
   parent: {
     padding: 10,
   },
+  InputImage: {
+    marginTop: 10,
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#9ea0a5',
+    borderStyle: 'dashed',
+    borderWidth: 2,
+    borderRadius: 1,
+    position: 'relative',
+    height: 200,
+  },
   pushtxt: {
     color: '#A10000',
   },
@@ -222,12 +234,17 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     fontStyle: 'italic',
   },
+  inputText: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#9ea0a5',
+  },
   publish: {
     marginTop: 25,
     borderRadius: 25,
     backgroundColor: '#A00000',
   },
-  description: {
-    height: 150,
+  descriptionArea: {
+    width: '100%',
+    height: 125,
   },
 });

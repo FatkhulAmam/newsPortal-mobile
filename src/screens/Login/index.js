@@ -42,9 +42,9 @@ class Login extends Component {
     return (
       <>
         <View style={styles.parent}>
-          <StatusBar backgroundColor={'#A00000'} />
           <View>
             <Header transparent>
+              <StatusBar backgroundColor={'#A00000'} />
               <Button transparent>
                 <Icon name="angle-left" size={30} />
               </Button>
