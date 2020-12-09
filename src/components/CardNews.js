@@ -5,8 +5,8 @@ import {Card, CardItem, Body, Text, Left} from 'native-base';
 export default class CardImage extends Component {
   render() {
     return (
-      <TouchableOpacity key="uniqueId1" onPress={this.showDetail}>
-        <Card transparent>
+      <TouchableOpacity key="uniqueId1" onPress={this.props.moveDetail}>
+        <Card transparent style={styles.newscard}>
           <CardItem>
             <Body>
               <Image
@@ -15,7 +15,7 @@ export default class CardImage extends Component {
               />
               <Text style={styles.headline}>{this.props.headline}</Text>
               <View style={styles.about}>
-                <Text>{this.props.authos}</Text>
+                <Text>{this.props.author}</Text>
                 <Left />
                 <Text note>{this.props.createdAt}</Text>
               </View>
@@ -29,8 +29,8 @@ export default class CardImage extends Component {
 
 const styles = StyleSheet.create({
   cardImage: {
-    width: 300,
-    height: 175,
+    width: '100%',
+    height: 200,
     backgroundColor: '#E8E8E8',
   },
   headline: {

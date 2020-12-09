@@ -1,67 +1,58 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, Image, View, ScrollView} from 'react-native';
 import {Header, Body, Right, Button, Title, Text, Left} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {API_URL} from '@env';
+import moment from 'moment';
 
 import {getDetail} from '../../redux/actions/news';
+import DefaultImage from '../../assets/images/default.png';
 
-class Detail extends React.Component {
-  componentDidMount() {
-    this.props.getDetail(this.props.auth.token, 1);
-    console.log(this.props.id);
-  }
+const Detail = ({route}) => {
+  const token = useSelector((state) => state.auth.token);
+  const detailNews = useSelector((state) => state.news.data[0]);
+  const dispatch = useDispatch();
 
-  render() {
-    const item = this.props.news.data;
-    return (
-      <>
-        <Header style={styles.header} transparent>
-          <Body>
-            <Title style={styles.text}>Maos News</Title>
-          </Body>
-          <Right>
-            <Button
-              transparent
-              onPress={() => this.props.navigation.navigate('Search')}>
-              <Icon name="search" size={20} />
-            </Button>
-          </Right>
-        </Header>
-        <View style={styles.parent}>
-          {Object.keys(item).length && (
-            <ScrollView>
-              <Image
-                style={styles.image}
-                source={{uri: `${API_URL}${item[0].picture}`}}
-              />
-              <View style={styles.titleContain}>
-                <Text style={styles.title}>{item[0].headline}</Text>
-                <View style={styles.about}>
-                  <Text>{item[0].author.name}</Text>
-                  <Left />
-                  <Text note>{item[0].createdAt}</Text>
-                </View>
-                <Text>{item[0].description}</Text>
-              </View>
-            </ScrollView>
-          )}
-        </View>
-      </>
-    );
-  }
-}
+  useEffect(() => {
+    dispatch(getDetail(token, route.params));
+  }, [dispatch, route.params, token]);
 
-const mapStateToProps = (state) => ({
-  news: state.news,
-  auth: state.auth,
-});
-const mapDispatchToProps = {
-  getDetail,
+  return (
+    <>
+      <Header style={styles.header} transparent>
+        <Body>
+          <Title style={styles.text}>Maos News</Title>
+        </Body>
+        <Right>
+          <Button
+            transparent
+            onPress={() => this.props.navigation.navigate('Search')}>
+            <Icon name="search" size={20} />
+          </Button>
+        </Right>
+      </Header>
+      <View style={styles.parent}>
+        <ScrollView>
+          <Image style={styles.image} source={DefaultImage} />
+          <View style={styles.titleContain}>
+            <Text style={styles.title}>{detailNews.headline}</Text>
+            <View style={styles.about}>
+              <Text>{detailNews.author.name}</Text>
+              <Left />
+              <Text note>
+                {moment(detailNews.createdAt).format('MMMM Do YYYY')}
+              </Text>
+            </View>
+            <Text>{detailNews.description}</Text>
+          </View>
+        </ScrollView>
+      </View>
+    </>
+  );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Detail);
+export default Detail;
 
 const styles = StyleSheet.create({
   header: {

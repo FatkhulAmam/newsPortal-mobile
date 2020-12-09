@@ -1,5 +1,6 @@
 const initialState = {
   data: [],
+  detailNews: [],
   isLoading: false,
   isError: false,
   message: '',
@@ -73,7 +74,7 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: false,
-        data: action.payload.data.result,
+        detailNews: action.payload.data.result,
       };
     }
     default: {

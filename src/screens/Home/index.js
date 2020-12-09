@@ -10,6 +10,7 @@ import {Header, Body, Right, Button, Title} from 'native-base';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {API_URL} from '@env';
+import moment from 'moment';
 
 import {getNews} from '../../redux/actions/news';
 import CardNews from '../../components/CardNews';
@@ -18,11 +19,6 @@ class Home extends React.Component {
   componentDidMount() {
     this.props.getNews(this.props.auth.token);
   }
-
-  showDetail = () => {
-    this.props.navigation.navigate('NewsDetail');
-    this.props.news.data[0].id;
-  };
 
   render() {
     const {isLoading, data} = this.props.news;
@@ -57,8 +53,11 @@ class Home extends React.Component {
                 <CardNews
                   headline={item.headline}
                   author={item.author.name}
-                  createdAt={item.createdAt}
+                  createdAt={moment(item.createdAt).format('MMMM Do YYYY')}
                   image={`${API_URL}${item.picture}`}
+                  moveDetail={() =>
+                    this.props.navigation.navigate('NewsDetail', item.id)
+                  }
                 />
               )}
             />
@@ -87,9 +86,8 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   parent: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    marginBottom: 95,
+    flex: 1,
+    backgroundColor: '#ffffff',
   },
   indicator: {
     flex: 1,
