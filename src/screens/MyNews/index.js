@@ -9,7 +9,7 @@ import moment from 'moment';
 import {getNewsMyNews} from '../../redux/actions/news';
 import CardNews from '../../components/CardMyNews';
 
-const Mynews = () => {
+const Mynews = ({navigation}) => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
   const dataMyNews = useSelector((state) => state.news.myNews);
@@ -46,9 +46,7 @@ const Mynews = () => {
               author={item.author.name}
               createdAt={moment(item.createdAt).format('MMMM Do YYYY')}
               image={`${API_URL}${item.picture}`}
-              moveDetail={() =>
-                this.props.navigation.navigate('NewsDetail', item.id)
-              }
+              moveDetail={() => navigation.navigate('EditNews', item.id)}
             />
           )}
         />

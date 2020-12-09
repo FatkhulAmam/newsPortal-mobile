@@ -22,6 +22,7 @@ import EditProfile from '../screens/EditProfille';
 import AddNews from '../screens/AddNews';
 import MyNews from '../screens/MyNews';
 import NewsDetail from '../screens/NewsDetail';
+import EditNews from '../screens/EditNews';
 
 import BottomNavigation from '../components/BottomNavigation';
 
@@ -81,6 +82,11 @@ class Route extends Component {
             <Stack.Screen
               name="EditProfile"
               component={EditProfile}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="EdiNews"
+              component={EditNews}
               options={{headerShown: false}}
             />
             <Stack.Screen
