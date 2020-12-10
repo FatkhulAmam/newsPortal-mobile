@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,7 +9,6 @@ import {
   SafeAreaView,
   StatusBar,
   ActivityIndicator,
-  Modal,
 } from 'react-native';
 import {
   Text,
@@ -52,7 +51,6 @@ const AddNews = ({navigation, route}) => {
     user.photo ? {uri: `${API_URL}${user.photo}`} : ProfileDefault,
   );
   const [dataImage, setDataImage] = React.useState();
-  const [modalVisible, setModalVisible] = useState(false);
 
   const takePicture = () => {
     ImagePicker.showImagePicker(options, async (response) => {
