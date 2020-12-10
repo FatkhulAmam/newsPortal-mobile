@@ -16,9 +16,9 @@ const makeNewsAction = (token, form) => ({
   payload: http(token).post('news', form),
 });
 
-const updateNewsAction = (token, data) => ({
+const updateNewsAction = (token, id, form) => ({
   type: 'UPDATE_NEWS',
-  payload: http(token).patch('news', qs.stringify(data)),
+  payload: http(token).patch(`news/${id}`, form),
 });
 
 const getDetail = (token, id) => ({

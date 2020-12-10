@@ -58,8 +58,13 @@ const AddNews = ({navigation, route}) => {
     dispatch(getDetail(token, route.params));
   }, [dispatch, route.params, token]);
 
-  const updateHotNews = async (data) => {
-    await dispatch(updateNewsAction(token, data));
+  const updateHotNews = async (data, img) => {
+    const form = new FormData();
+    form.append('headline', data.judul);
+    form.append('category', data.category);
+    form.append('description', data.description);
+    form.append('pictures', img);
+    await dispatch(updateNewsAction(token, detailNews.id, form));
     if (newsIndex.isUpdated === false) {
       Alert.alert(newsIndex.message);
     } else {
@@ -97,7 +102,7 @@ const AddNews = ({navigation, route}) => {
             category: detailNews.category,
             description: detailNews.description,
           }}
-          onSubmit={(values) => updateHotNews(values)}>
+          onSubmit={(values) => updateHotNews(values, dataImage)}>
           {({
             handleChange,
             handleBlur,
