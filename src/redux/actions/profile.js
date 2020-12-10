@@ -5,4 +5,9 @@ const getProfile = (token) => ({
   payload: http(token).get('user/'),
 });
 
-export {getProfile};
+const updateProfile = (token, form) => ({
+  type: 'UPDATE_PROFILE',
+  payload: http(token).patch('user/', form),
+});
+
+export {getProfile, updateProfile};
