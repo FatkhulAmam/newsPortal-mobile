@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -24,12 +24,13 @@ import {
 } from 'native-base';
 import {useDispatch, useSelector} from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
+import {API_URL} from '@env';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {makeNewsAction} from '../../redux/actions/news';
+import {updateNewsAction, getDetail} from '../../redux/actions/news';
 
 const FormValidation = yup.object().shape({
   judul: yup.string().required('Judul diperlukan'),
@@ -41,21 +42,25 @@ const options = {
   title: 'Select Picture',
 };
 
-const AddNews = ({navigation}) => {
+const AddNews = ({navigation, route}) => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
   const newsIndex = useSelector((state) => state.news);
-  const [NewsImage, setNewsImage] = useState('');
-  const [dataImage, setDataImage] = React.useState('');
+  const detailNews = useSelector((state) => state.news.detailNews);
+  const [NewsImage, setNewsImage] = useState({
+    uri: `${API_URL}${detailNews.picture}`,
+  });
+  const [dataImage, setDataImage] = React.useState(
+    `${API_URL}${detailNews.photo}`,
+  );
 
-  const makeHotNews = async (data, img) => {
-    const form = new FormData();
-    form.append('headline', data.judul);
-    form.append('category', data.category);
-    form.append('description', data.description);
-    form.append('pictures', img);
-    await dispatch(makeNewsAction(token, form));
-    if (newsIndex.isMaked === false) {
+  useEffect(() => {
+    dispatch(getDetail(token, route.params));
+  }, [dispatch, route.params, token]);
+
+  const updateHotNews = async (data) => {
+    await dispatch(updateNewsAction(token, data));
+    if (newsIndex.isUpdated === false) {
       Alert.alert(newsIndex.message);
     } else {
       Alert.alert(newsIndex.message);
@@ -88,11 +93,11 @@ const AddNews = ({navigation}) => {
         <Formik
           validationSchema={FormValidation}
           initialValues={{
-            judul: '',
-            category: '',
-            description: '',
+            judul: detailNews.headline,
+            category: detailNews.category,
+            description: detailNews.description,
           }}
-          onSubmit={(values) => makeHotNews(values, dataImage)}>
+          onSubmit={(values) => updateHotNews(values)}>
           {({
             handleChange,
             handleBlur,

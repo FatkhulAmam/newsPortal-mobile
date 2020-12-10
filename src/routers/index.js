@@ -85,7 +85,7 @@ class Route extends Component {
               options={{headerShown: false}}
             />
             <Stack.Screen
-              name="EdiNews"
+              name="EditNews"
               component={EditNews}
               options={{headerShown: false}}
             />

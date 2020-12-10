@@ -16,6 +16,11 @@ const makeNewsAction = (token, form) => ({
   payload: http(token).post('news', form),
 });
 
+const updateNewsAction = (token, data) => ({
+  type: 'UPDATE_NEWS',
+  payload: http(token).patch('news', qs.stringify(data)),
+});
+
 const getDetail = (token, id) => ({
   type: 'GET_DETAIL',
   payload: http(token).get(`news/${id}`),
@@ -26,4 +31,11 @@ const getSearch = (keyword, data) => ({
   payload: http().get(`news/?search[headline]=${keyword}`, qs.stringify(data)),
 });
 
-export {getNews, makeNewsAction, getDetail, getSearch, getNewsMyNews};
+export {
+  getNews,
+  makeNewsAction,
+  getDetail,
+  getSearch,
+  getNewsMyNews,
+  updateNewsAction,
+};

@@ -28,8 +28,8 @@ const schemaValidation = yup.object().shape({
 });
 
 class Login extends Component {
-  dologin = (data) => {
-    this.props.loginAction(data);
+  dologin = async (data) => {
+    await this.props.loginAction(data);
     const {message, isError} = this.props.auth;
     if (isError) {
       Alert.alert(message);

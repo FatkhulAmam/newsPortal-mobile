@@ -5,6 +5,7 @@ const initialState = {
   isLoading: false,
   isError: false,
   isMaked: false,
+  isUpdated: false,
   message: '',
 };
 
@@ -77,6 +78,30 @@ export default (state = initialState, action) => {
         isMaked: true,
         isLoading: false,
         message: 'make news success',
+      };
+    }
+    //update news
+    case 'UPDATE_NEWS_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'UPDATE_NEWS_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: 'update news denied',
+      };
+    }
+    case 'UPDATE_NEWS_FULFILLED': {
+      return {
+        ...state,
+        isError: false,
+        isUpdated: true,
+        isLoading: false,
+        message: 'update news success',
       };
     }
     // get detail news
