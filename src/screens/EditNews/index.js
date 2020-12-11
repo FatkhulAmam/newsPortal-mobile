@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   StatusBar,
   ActivityIndicator,
+  ToastAndroid,
 } from 'react-native';
 import {
   Text,
@@ -40,6 +41,22 @@ const FormValidation = yup.object().shape({
 
 const options = {
   title: 'Select Picture',
+};
+
+const showToastImg = () => {
+  ToastAndroid.showWithGravity(
+    'Not an image (jpg/jpeg/png)',
+    ToastAndroid.LONG,
+    ToastAndroid.CENTER,
+  );
+};
+
+const showToastSize = () => {
+  ToastAndroid.showWithGravity(
+    'image to large(under 1 mb)',
+    ToastAndroid.LONG,
+    ToastAndroid.CENTER,
+  );
 };
 
 const AddNews = ({navigation, route}) => {
@@ -95,10 +112,10 @@ const AddNews = ({navigation, route}) => {
               type: response.type,
             });
           } else {
-            Alert.alert('Not an image (jpg/jpeg/png)');
+            showToastImg();
           }
         } else {
-          Alert.alert('image to large(under 1mb)');
+          showToastSize();
         }
       }
     });
