@@ -54,6 +54,7 @@ const AddNews = ({navigation, route}) => {
 
   const takePicture = () => {
     ImagePicker.showImagePicker(options, async (response) => {
+      console.log(response.fileSize);
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
@@ -61,12 +62,24 @@ const AddNews = ({navigation, route}) => {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        setAvatar({uri: response.uri});
-        await setDataImage({
-          uri: response.uri,
-          name: response.fileName,
-          type: response.type,
-        });
+        if (response.fileSize <= 500 * 500) {
+          if (
+            `${response.type}` === 'image/jpg' ||
+            'image/jpeg' ||
+            'image/png'
+          ) {
+            setAvatar({uri: response.uri});
+            await setDataImage({
+              uri: response.uri,
+              name: response.fileName,
+              type: response.type,
+            });
+          } else {
+            Alert.alert('Not an image (jpg/jpeg/png)');
+          }
+        } else {
+          Alert.alert('image to large(under 500mb)');
+        }
       }
     });
   };
