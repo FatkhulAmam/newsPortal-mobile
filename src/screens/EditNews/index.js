@@ -82,12 +82,24 @@ const AddNews = ({navigation, route}) => {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        setNewsImage({uri: response.uri});
-        await setDataImage({
-          uri: response.uri,
-          name: response.fileName,
-          type: response.type,
-        });
+        if (response.fileSize <= 1024 * 1024) {
+          if (
+            `${response.type}` === 'image/jpg' ||
+            'image/jpeg' ||
+            'image/png'
+          ) {
+            setNewsImage({uri: response.uri});
+            await setDataImage({
+              uri: response.uri,
+              name: response.fileName,
+              type: response.type,
+            });
+          } else {
+            Alert.alert('Not an image (jpg/jpeg/png)');
+          }
+        } else {
+          Alert.alert('image to large(under 1mb)');
+        }
       }
     });
   };

@@ -78,7 +78,7 @@ const AddNews = ({navigation, route}) => {
             Alert.alert('Not an image (jpg/jpeg/png)');
           }
         } else {
-          Alert.alert('image to large(under 500mb)');
+          Alert.alert('image to large(under 500kb)');
         }
       }
     });

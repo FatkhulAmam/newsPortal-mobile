@@ -61,9 +61,7 @@ const Home = ({navigation}) => {
                 author={item.author.name}
                 createdAt={moment(item.createdAt).format('MMMM Do YYYY')}
                 image={`${API_URL}${item.picture}`}
-                moveDetail={() =>
-                  this.props.navigation.navigate('NewsDetail', item.id)
-                }
+                moveDetail={() => navigation.navigate('NewsDetail', item.id)}
               />
             )}
             onEndReached={nextPage}
