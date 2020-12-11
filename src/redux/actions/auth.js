@@ -11,4 +11,9 @@ const registerAction = (data) => ({
   payload: http().post('auth/register/', qs.stringify(data)),
 });
 
-export {loginAction, registerAction};
+const changePassword = (data) => ({
+  type: 'CHANGE_PASSWORD',
+  payload: http().patch('auth/password/change', qs.stringify(data)),
+});
+
+export {loginAction, registerAction, changePassword};

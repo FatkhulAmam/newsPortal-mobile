@@ -1,5 +1,6 @@
 const initialState = {
   data: [],
+  res: [],
   myNews: [],
   detailNews: [],
   isLoading: false,
@@ -30,7 +31,30 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false,
         isError: false,
-        data: action.payload.data.result,
+        data: action.payload.data,
+      };
+    }
+    // get news for pagination
+    case 'NEWS_PAGE_PENDING': {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    }
+    case 'NEWS_PAGE_REJECTED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+        message: 'There is an error at request data',
+      };
+    }
+    case 'NEWS_PAGE_FULFILLED': {
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        res: action.payload.data,
       };
     }
     // get my news

@@ -6,6 +6,11 @@ const getNews = (token, data) => ({
   payload: http(token).get('news/?sort[createdAt]=desc', qs.stringify(data)),
 });
 
+const getNewsScroll = (token, page) => ({
+  type: 'NEWS_PAGE',
+  payload: http(token).get(`news/?sort[createdAt]=desc&page=${page}`),
+});
+
 const getNewsMyNews = (token) => ({
   type: 'MY_NEWS',
   payload: http(token).get('news/all/user'),
@@ -38,4 +43,5 @@ export {
   getSearch,
   getNewsMyNews,
   updateNewsAction,
+  getNewsScroll,
 };

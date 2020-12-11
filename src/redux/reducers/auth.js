@@ -3,6 +3,7 @@ const initialState = {
   isError: false,
   isLoadingLogin: false,
   isLoadingRegister: false,
+  isLoadingChange: false,
   token: '',
   message: '',
 };
@@ -62,6 +63,29 @@ export default (state = initialState, action) => {
         isError: false,
         isLoadingRegister: false,
         message: 'register success',
+      };
+    }
+    //cahange password
+    case 'CHANGE_PASSWORD_PENDING': {
+      return {
+        ...state,
+        isLoadingChange: true,
+      };
+    }
+    case 'CHANGE_PASSWORD_REJECTED': {
+      return {
+        ...state,
+        isLoadingChange: false,
+        isError: true,
+        message: 'cannot change password',
+      };
+    }
+    case 'CHANGE_PASSWORD_FULFILLED': {
+      return {
+        ...state,
+        isError: false,
+        isLoadingChange: false,
+        message: 'change password success',
       };
     }
     default: {
