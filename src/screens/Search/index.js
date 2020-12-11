@@ -3,16 +3,18 @@ import {
   StyleSheet,
   View,
   TextInput,
-  ScrollView,
   TouchableOpacity,
-  Image,
+  FlatList,
+  ActivityIndicator,
 } from 'react-native';
-import {Header, Left, Text, Button, Body, Card, CardItem} from 'native-base';
+import {Header, Button, Body} from 'native-base';
 import {connect} from 'react-redux';
 import {API_URL} from '@env';
+import moment from 'moment';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {getSearch} from '../../redux/actions/news';
+import CardNews from '../../components/CardNews';
 
 class Search extends React.Component {
   state = {
@@ -20,11 +22,11 @@ class Search extends React.Component {
   };
   searchNews = () => {
     const {keyword} = this.state;
-    this.props.getSearch(keyword);
+    this.props.getSearch(this.props.token, keyword);
   };
 
   render() {
-    const {isLoading, data, isError, message} = this.props.search;
+    const {isLoading, data} = this.props.search;
     return (
       <>
         <Header style={styles.header} transparent>
@@ -44,40 +46,32 @@ class Search extends React.Component {
             </View>
           </Body>
         </Header>
-        <View style={styles.parent}>
-          <ScrollView>
-            {!isLoading &&
-              !isError &&
-              data.length !== 0 &&
-              data.map((item) => {
-                return (
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('NewsDetail')
-                    }>
-                    <Card>
-                      <CardItem>
-                        <Body>
-                          <Image
-                            style={styles.cardImage}
-                            source={{uri: `${API_URL}${item.picture}`}}
-                          />
-                          <Text style={styles.headline}>{item.headline}</Text>
-                          <View style={styles.about}>
-                            <Text>{item.author.name}</Text>
-                            <Left />
-                            <Text note>{item.createdAt}</Text>
-                          </View>
-                        </Body>
-                      </CardItem>
-                    </Card>
-                  </TouchableOpacity>
-                );
-              })}
-          </ScrollView>
-          {isLoading && !isError && <Text>Loading</Text>}
-          {isError && message !== '' && <Text>{message}</Text>}
-        </View>
+        {isLoading === false ? (
+          <View style={styles.parent}>
+            <FlatList
+              data={data}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({item, index}) => (
+                <CardNews
+                  headline={item.headline}
+                  author={item.author.name}
+                  createdAt={moment(item.createdAt).format('MMMM Do YYYY')}
+                  image={`${API_URL}${item.picture}`}
+                  moveDetail={() =>
+                    this.props.navigation.navigate('NewsDetail', item.id)
+                  }
+                />
+              )}
+            />
+          </View>
+        ) : (
+          <ActivityIndicator
+            size="large"
+            color="#A00000"
+            animating={isLoading}
+            style={styles.indicator}
+          />
+        )}
       </>
     );
   }
@@ -85,6 +79,7 @@ class Search extends React.Component {
 
 const mapStateToProps = (state) => ({
   search: state.search,
+  token: state.auth.token,
 });
 const mapDispatchToProps = {
   getSearch,
@@ -99,7 +94,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#C8C8C8',
     borderRadius: 50,
-    paddingLeft: 35,
+    paddingLeft: 15,
     fontSize: 20,
     marginLeft: 13,
     marginTop: 5,
@@ -111,7 +106,7 @@ const styles = StyleSheet.create({
     color: '#a3a3a3',
     position: 'absolute',
     top: 14,
-    left: 23,
+    right: 20,
   },
   parent: {
     paddingLeft: 10,
@@ -128,5 +123,10 @@ const styles = StyleSheet.create({
   },
   about: {
     flexDirection: 'row',
+  },
+  indicator: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

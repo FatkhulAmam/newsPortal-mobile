@@ -1,9 +1,9 @@
 import http from '../../helpers/http';
 import qs from 'qs';
 
-const getNews = (token, data) => ({
+const getNews = (token, sortKey, sortValue) => ({
   type: 'GET_NEWS',
-  payload: http(token).get('news/?sort[createdAt]=desc', qs.stringify(data)),
+  payload: http(token).get(`news/?sort[${sortKey}]=${sortValue}`),
 });
 
 const getNewsScroll = (token, page) => ({
@@ -31,9 +31,9 @@ const getDetail = (token, id) => ({
   payload: http(token).get(`news/${id}`),
 });
 
-const getSearch = (keyword, data) => ({
+const getSearch = (token, keyword) => ({
   type: 'GET_SEARCH',
-  payload: http().get(`news/?search[headline]=${keyword}`, qs.stringify(data)),
+  payload: http(token).get(`news?search[headline]=${keyword}`),
 });
 
 export {

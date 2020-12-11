@@ -22,9 +22,12 @@ const Home = ({navigation}) => {
   const news = useSelector((state) => state.news.data.result);
   const newsPage = useSelector((state) => state.news.res);
   const [data, setData] = useState(news);
+  const [searchValue, setSearchValue] = useState(news);
+  const [sortKey, setSortKey] = useState('createdAt');
+  const [sortValue, setSortValue] = useState('desc');
   useEffect(() => {
-    dispatch(getNews(token));
-  }, [dispatch, token]);
+    dispatch(getNews(token, sortKey, sortValue));
+  }, [dispatch, token, sortKey, sortValue]);
 
   const nextPage = () => {
     console.log('amam');
