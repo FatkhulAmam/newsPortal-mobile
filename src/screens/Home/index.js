@@ -10,13 +10,26 @@ import {
 } from 'react-native';
 import {Header, Body, Right, Button, Title, Text} from 'native-base';
 import {useSelector, useDispatch} from 'react-redux';
+import PushNotification from 'react-native-push-notification';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {API_URL} from '@env';
 import moment from 'moment';
 
+import iconNotif from '../../assets/images/logo.png';
 import {getNews, getNewsScroll} from '../../redux/actions/news';
 import CardNews from '../../components/CardNews';
-import {set} from 'react-native-reanimated';
+
+PushNotification.createChannel(
+  {
+    channelId: 'notif', // (required)
+    channelName: 'Notif channel', // (required)
+    channelDescription: 'A channel to welcoming reader notif', // (optional) default: undefined.
+    soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
+    importance: 4, // (optional) default: 4. Int value of the Android notification importance
+    vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+  },
+  (created) => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+);
 
 const Home = ({navigation}) => {
   const dispatch = useDispatch();
@@ -31,6 +44,11 @@ const Home = ({navigation}) => {
   const [sortValue, setSortValue] = useState('desc');
   useEffect(() => {
     dispatch(getNews(token, sortKey, sortValue));
+    PushNotification.localNotification({
+      channelId: 'notif',
+      tittle: 'Maos News',
+      message: 'Welcome Maos Readers!!',
+    });
   }, [dispatch, token, sortKey, sortValue]);
 
   const nextPage = () => {
