@@ -45,7 +45,6 @@ const Detail = ({route}) => {
           <View style={styles.titleContain}>
             <Text style={styles.title}>{detailNews.headline}</Text>
             <View style={styles.about}>
-              <Text>{detailNews.author.name}</Text>
               <Left />
               <Text note>
                 {moment(detailNews.createdAt).format('MMMM Do YYYY')}

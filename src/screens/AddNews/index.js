@@ -72,7 +72,7 @@ const AddNews = ({navigation}) => {
     form.append('description', data.description);
     form.append('pictures', img);
     await dispatch(makeNewsAction(token, form));
-    if (newsIndex.isMaked === false) {
+    if (newsIndex.isError === true) {
       Alert.alert(newsIndex.message);
     } else {
       Alert.alert(newsIndex.message);

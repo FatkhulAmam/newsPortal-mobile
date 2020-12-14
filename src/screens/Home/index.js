@@ -34,14 +34,7 @@ PushNotification.createChannel(
 const Home = ({navigation}) => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
-  const newsIndex = useSelector((state) => state.news);
-  const news = useSelector((state) => state.news.data.result);
-  const newsPage = useSelector((state) => state.news.res);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [data, setData] = useState(news);
-  const [searchValue, setSearchValue] = useState(news);
   const [sortKey, setSortKey] = useState('createdAt');
-  const [sortValue, setSortValue] = useState('desc');
   useEffect(() => {
     dispatch(getNews(token, sortKey, sortValue));
     PushNotification.localNotification({
@@ -50,6 +43,14 @@ const Home = ({navigation}) => {
       message: 'Welcome Maos Readers!!',
     });
   }, [dispatch, token, sortKey, sortValue]);
+
+  const newsIndex = useSelector((state) => state.news);
+  const news = useSelector((state) => state.news.data.result);
+  const newsPage = useSelector((state) => state.news.res);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [data, setData] = useState(news);
+  const [searchValue, setSearchValue] = useState(news);
+  const [sortValue, setSortValue] = useState('desc');
 
   const nextPage = () => {
     console.log('amam');
@@ -78,14 +79,7 @@ const Home = ({navigation}) => {
           </Button>
         </Right>
       </Header>
-      {newsIndex.isLoading === true ? (
-        <ActivityIndicator
-          size="large"
-          color="#A00000"
-          animating={newsIndex.isLoading}
-          style={styles.indicator}
-        />
-      ) : (
+      {newsIndex.isLoading === false ? (
         <View style={styles.parent}>
           <FlatList
             data={data}
@@ -103,6 +97,13 @@ const Home = ({navigation}) => {
             onEndReachedThreshold={0.5}
           />
         </View>
+      ) : (
+        <ActivityIndicator
+          size="large"
+          color="#A00000"
+          animating={newsIndex.isLoading}
+          style={styles.indicator}
+        />
       )}
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.centeredView}>

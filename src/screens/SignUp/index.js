@@ -32,7 +32,7 @@ class SignUp extends Component {
   signUp = (data) => {
     this.props.registerAction(data);
     const {message, isError} = this.props.register;
-    if (isError) {
+    if (isError === true) {
       Alert.alert(message);
     } else {
       Alert.alert(message);
