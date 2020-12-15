@@ -6,4 +6,9 @@ const getCategory = (data) => ({
   payload: http().get('category', qs.stringify(data)),
 });
 
-export {getCategory};
+const getCategoryById = (data, id) => ({
+  type: 'GET_CATEGORY',
+  payload: http().get(`category/${id}`, qs.stringify(data)),
+});
+
+export {getCategory, getCategoryById};

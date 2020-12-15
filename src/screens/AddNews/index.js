@@ -22,6 +22,7 @@ import {
   Button,
   Title,
   Input,
+  Picker,
 } from 'native-base';
 import {useDispatch, useSelector} from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
@@ -184,7 +185,7 @@ const AddNews = ({navigation}) => {
                       style={styles.inputText}
                       onChangeText={handleChange('category')}
                       onBlur={handleBlur('category')}
-                      value={values.category}
+                      value={1}
                     />
                     {touched.category && errors.category && (
                       <Text style={styles.textError}>{errors.category}</Text>
