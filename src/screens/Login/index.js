@@ -31,7 +31,7 @@ class Login extends Component {
   dologin = async (data) => {
     await this.props.loginAction(data);
     const {message, isError} = this.props.auth;
-    if (isError) {
+    if (isError === false) {
       Alert.alert(message);
     } else {
       Alert.alert(message);

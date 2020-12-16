@@ -37,10 +37,6 @@ const MainApp = () => {
 };
 
 class Route extends Component {
-  componentDidMount() {
-    console.log(this.props.auth);
-  }
-
   render() {
     return (
       <NavigationContainer>

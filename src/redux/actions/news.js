@@ -1,7 +1,11 @@
 import http from '../../helpers/http';
-import qs from 'qs';
 
-const getNews = (token, sortKey, sortValue) => ({
+const getNews = (token) => ({
+  type: 'GET_NEWS',
+  payload: http(token).get('news/?sort[createdAt]=desc'),
+});
+
+const getSortingNews = (token, sortKey, sortValue) => ({
   type: 'GET_NEWS',
   payload: http(token).get(`news/?sort[${sortKey}]=${sortValue}`),
 });
@@ -44,4 +48,5 @@ export {
   getNewsMyNews,
   updateNewsAction,
   getNewsScroll,
+  getSortingNews,
 };

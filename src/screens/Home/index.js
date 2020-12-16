@@ -3,10 +3,10 @@ import {
   StyleSheet,
   View,
   FlatList,
-  ActivityIndicator,
   StatusBar,
   TouchableOpacity,
   Modal,
+  ActivityIndicator,
 } from 'react-native';
 import {Header, Body, Right, Button, Title, Text} from 'native-base';
 import {useSelector, useDispatch} from 'react-redux';
@@ -15,8 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {API_URL} from '@env';
 import moment from 'moment';
 
-import iconNotif from '../../assets/images/logo.png';
-import {getNews, getNewsScroll} from '../../redux/actions/news';
+import {getNews, getSortingNews} from '../../redux/actions/news';
 import CardNews from '../../components/CardNews';
 
 PushNotification.createChannel(
@@ -34,36 +33,31 @@ PushNotification.createChannel(
 const Home = ({navigation}) => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
-  const [sortKey, setSortKey] = useState('createdAt');
   useEffect(() => {
-    dispatch(getNews(token, sortKey, sortValue));
+    dispatch(getNews(token));
     PushNotification.localNotification({
       channelId: 'notif',
       tittle: 'Maos News',
       message: 'Welcome Maos Readers!!',
     });
-  }, [dispatch, token, sortKey, sortValue]);
+  }, [dispatch, token]);
 
-  const newsIndex = useSelector((state) => state.news);
   const news = useSelector((state) => state.news.data.result);
-  const newsPage = useSelector((state) => state.news.res);
+  const newsIndex = useSelector((state) => state.news);
   const [modalVisible, setModalVisible] = useState(false);
-  const [data, setData] = useState(news);
-  const [searchValue, setSearchValue] = useState(news);
-  const [sortValue, setSortValue] = useState('desc');
+  const [sortKey, setSortKey] = useState('');
+  const [sortValue, setSortValue] = useState('');
 
   const nextPage = () => {
     console.log('amam');
   };
 
-  const newsDesc = () => {
-    setSortValue('desc');
-    return dispatch(getNews(token, sortKey, sortValue));
+  const newsDesc = async () => {
+    await dispatch(getSortingNews(token, 'createdAt', 'desc'));
   };
 
-  const newsAsc = () => {
-    setSortValue('asc');
-    return dispatch(getNews(token, sortKey, sortValue));
+  const newsAsc = async () => {
+    await dispatch(getSortingNews(token, 'createdAt', 'asc'));
   };
 
   return (
@@ -77,12 +71,15 @@ const Home = ({navigation}) => {
           <Button transparent onPress={() => setModalVisible(true)}>
             <Icon name="filter" size={20} />
           </Button>
+          <Button transparent onPress={() => navigation.navigate('Search')}>
+            <Icon name="search" size={20} />
+          </Button>
         </Right>
       </Header>
-      {newsIndex.isLoading === false ? (
-        <View style={styles.parent}>
+      <View style={styles.parent}>
+        {newsIndex.isLoading === false ? (
           <FlatList
-            data={data}
+            data={news}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({item, index}) => (
               <CardNews
@@ -96,15 +93,15 @@ const Home = ({navigation}) => {
             onEndReached={nextPage}
             onEndReachedThreshold={0.5}
           />
-        </View>
-      ) : (
-        <ActivityIndicator
-          size="large"
-          color="#A00000"
-          animating={newsIndex.isLoading}
-          style={styles.indicator}
-        />
-      )}
+        ) : (
+          <ActivityIndicator
+            size="large"
+            color="#A00000"
+            animating={newsIndex.isLoading}
+            style={styles.indicator}
+          />
+        )}
+      </View>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
@@ -115,12 +112,6 @@ const Home = ({navigation}) => {
             <TouchableOpacity
               onPress={() => setModalVisible(!modalVisible, newsDesc())}>
               <Text style={styles.modalText}>Sort By date : Descending</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('Search', setModalVisible(!modalVisible))
-              }>
-              <Text style={styles.modalText}>Search</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {

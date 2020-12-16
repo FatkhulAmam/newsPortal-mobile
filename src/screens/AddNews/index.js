@@ -185,7 +185,7 @@ const AddNews = ({navigation}) => {
                       style={styles.inputText}
                       onChangeText={handleChange('category')}
                       onBlur={handleBlur('category')}
-                      value={1}
+                      value={values.category}
                     />
                     {touched.category && errors.category && (
                       <Text style={styles.textError}>{errors.category}</Text>
