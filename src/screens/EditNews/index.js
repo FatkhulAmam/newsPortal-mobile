@@ -64,9 +64,7 @@ const AddNews = ({navigation, route}) => {
   const token = useSelector((state) => state.auth.token);
   const newsIndex = useSelector((state) => state.news);
   const detailNews = useSelector((state) => state.news.detailNews);
-  const [NewsImage, setNewsImage] = useState({
-    uri: `${API_URL}${detailNews.picture}`,
-  });
+  const [NewsImage, setNewsImage] = useState('');
   const [dataImage, setDataImage] = React.useState(
     `${API_URL}${detailNews.photo}`,
   );
@@ -165,7 +163,7 @@ const AddNews = ({navigation, route}) => {
                 <View style={styles.parent}>
                   <Form>
                     <Label style={styles.label}>Upload Gambar</Label>
-                    {NewsImage === '' ? (
+                    {detailNews.picture === '' ? (
                       <TouchableOpacity onPress={pickImage}>
                         <View style={styles.InputImage}>
                           <Icon name="cloud-upload" size={50} color="#8e8e8e" />
@@ -174,7 +172,14 @@ const AddNews = ({navigation, route}) => {
                       </TouchableOpacity>
                     ) : (
                       <TouchableOpacity onPress={pickImage}>
-                        <Image style={styles.newsImage} source={NewsImage} />
+                        <Image
+                          style={styles.newsImage}
+                          source={
+                            NewsImage === ''
+                              ? {uri: `${API_URL}${detailNews.picture}`}
+                              : NewsImage
+                          }
+                        />
                       </TouchableOpacity>
                     )}
                     <Input
