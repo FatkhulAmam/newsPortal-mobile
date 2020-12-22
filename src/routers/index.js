@@ -10,7 +10,6 @@ const Tab = createBottomTabNavigator();
 // import component
 
 //import screens
-import Splash from '../screens/Splash';
 import Home from '../screens/Home';
 import ForgotPassword from '../screens/ForgotPassword';
 import Login from '../screens/Login';
@@ -42,11 +41,6 @@ class Route extends Component {
       <NavigationContainer>
         {!this.props.auth.isLogin ? (
           <Stack.Navigator>
-            <Stack.Screen
-              name="Splash"
-              component={Splash}
-              options={{headerShown: false}}
-            />
             <Stack.Screen
               name="SignUp"
               component={SignUp}
