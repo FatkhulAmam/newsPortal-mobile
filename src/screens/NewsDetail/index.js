@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, Image, View, ScrollView} from 'react-native';
+import {StyleSheet, Image, View, ScrollView, StatusBar} from 'react-native';
 import {Header, Body, Right, Button, Title, Text, Left} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useSelector, useDispatch} from 'react-redux';
@@ -21,6 +21,7 @@ const Detail = ({route}) => {
   return (
     <>
       <Header style={styles.header} transparent>
+        <StatusBar backgroundColor={'#A00000'} />
         <Body>
           <Title style={styles.text}>Maos News</Title>
         </Body>

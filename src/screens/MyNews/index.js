@@ -44,6 +44,7 @@ const Mynews = ({navigation}) => {
             <CardNews
               headline={item.headline}
               author={item.author.name}
+              preview={item.description.slice(0, 100)}
               createdAt={moment(item.createdAt).format('MMMM Do YYYY')}
               image={`${API_URL}${item.picture}`}
               moveDetail={() => navigation.navigate('EditNews', item.id)}

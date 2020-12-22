@@ -19,8 +19,15 @@ export default class CardImage extends Component {
                 }
               />
               <Text style={styles.headline}>{this.props.headline}</Text>
+              <Text style={styles.preview}>
+                {`${this.props.preview}${'....'}`}
+                <Text style={styles.readWrap} note>
+                  Readmore
+                </Text>
+              </Text>
               <View style={styles.about}>
-                <Text>{this.props.author}</Text>
+                <Image source={this.props.userImg} style={styles.userImage} />
+                <Text style={styles.author}>{this.props.author}</Text>
                 <Left />
                 <Text note>{this.props.createdAt}</Text>
               </View>
@@ -44,5 +51,17 @@ const styles = StyleSheet.create({
   },
   about: {
     flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  author: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  userImage: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    marginRight: 5,
   },
 });

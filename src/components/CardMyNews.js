@@ -19,6 +19,12 @@ export default class CardImage extends Component {
                 }
               />
               <Text style={styles.headline}>{this.props.headline}</Text>
+              <Text style={styles.preview}>
+                {`${this.props.preview}${'....'}`}
+                <Text style={styles.readWrap} note>
+                  Change News
+                </Text>
+              </Text>
               <View style={styles.about}>
                 <Text note>{this.props.createdAt}</Text>
               </View>
@@ -42,5 +48,6 @@ const styles = StyleSheet.create({
   },
   about: {
     flexDirection: 'row',
+    marginTop: 10,
   },
 });

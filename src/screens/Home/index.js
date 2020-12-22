@@ -14,6 +14,7 @@ import PushNotification from 'react-native-push-notification';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {API_URL} from '@env';
 import moment from 'moment';
+import avatarImg from '../../assets/images/avatar.png';
 
 import {getNews, getSortingNews} from '../../redux/actions/news';
 import CardNews from '../../components/CardNews';
@@ -85,8 +86,14 @@ const Home = ({navigation}) => {
               <CardNews
                 headline={item.headline}
                 author={item.author.name}
+                preview={item.description.slice(0, 100)}
                 createdAt={moment(item.createdAt).format('MMMM Do YYYY')}
                 image={`${API_URL}${item.picture}`}
+                userImg={
+                  item.author.photo === null
+                    ? avatarImg
+                    : {uri: `${API_URL}${item.author.photo}`}
+                }
                 moveDetail={() => navigation.navigate('NewsDetail', item.id)}
               />
             )}
