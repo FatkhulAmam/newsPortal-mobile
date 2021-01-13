@@ -17,5 +17,5 @@ just click link in bellow
 ## Application view
 
 
-<img src="src/assets/images/home.jpg" width="250"/>  | <img src="src/assets/images/Myprofile.jpg" width="250"/> | <img src="src/assets/images/addNews.jpg" width="250"/> |
-| ----- | --- | --- |
+<img src="src/assets/images/home.jpg" width="250"/>  | <img src="src/assets/images/Myprofile.jpg" width="250"/> | <img src="src/assets/images/addNews.jpg" width="250"/> | <img src="src/assets/images/profile.jpg" width="250"/> |
+| ----- | --- | --- | --- |
